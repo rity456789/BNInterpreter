@@ -61,10 +61,23 @@ namespace ConsoleApp2
         private AST Factor()
         {
             var token = currentToken;
+
             if (token.type == TokenType.INTERGER)
             {
                 Eat(TokenType.INTERGER);
                 return new Num(token);
+            }
+            else if (token.type == TokenType.PLUS)
+            {
+                Eat(TokenType.PLUS);
+                var node = new UnaryOP(token, Factor());
+                return node;
+            }
+            else if (token.type == TokenType.MINUS)
+            {
+                Eat(TokenType.MINUS);
+                var node = new UnaryOP(token, Factor());
+                return node;
             }
             else if (token.type == TokenType.LPAREN)
             {

@@ -31,10 +31,25 @@ namespace ConsoleApp2
             return Int32.Parse(node.value);
         }
 
+        private int VisitUnaryOP(UnaryOP node)
+        {
+            TokenType op = node.op.type;
+            if (op == TokenType.PLUS)
+            {
+                return this.Visit(node.expression);
+            }
+            else if (op == TokenType.MINUS)
+            {
+                return -this.Visit(node.expression);
+            }
+            else throw new Exception("Error visit UnaryOP");
+        }
+
         private int Visit(AST node)
         {
             if (node.GetType().Name == "Num") return VisitNum((Num)node);
             else if (node.GetType().Name == "BinOP") return VisitBinOP((BinOP)node);
+            else if (node.GetType().Name == "UnaryOP") return VisitUnaryOP((UnaryOP)node);
             else throw new Exception("Unsigned type of AST");
         }
 
