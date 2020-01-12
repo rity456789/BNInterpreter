@@ -11,11 +11,13 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Token.AddSampleOperator();
+            Lexer.InitReservedKeywords();
+
             while (true)
             {
                 string text;
-                Console.Write("Calc: ");
-                text = Console.ReadLine();
+                
+                text = Input.Read();
 
                 Lexer lexer = new Lexer(text);
                 Parser parser = new Parser(lexer);
