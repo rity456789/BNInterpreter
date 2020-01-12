@@ -14,7 +14,7 @@ namespace ConsoleApp2
     {
 
         //TO DO: do not implement
-        public int Visit(AST node)
+        public object Visit(AST node)
         {
             AST[] parameters = new AST[1];
             parameters[0] = node;
@@ -24,7 +24,7 @@ namespace ConsoleApp2
 
             string method = "Visit" + nodeType.Name;
             MethodInfo theMethod = thisType.GetMethod(method);
-            return (int)theMethod.Invoke(this, parameters);
+            return theMethod.Invoke(this, parameters);
         }
 
         public void GenericVisit(AST node)

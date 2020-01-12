@@ -8,20 +8,35 @@ namespace ConsoleApp2
 {
     enum TokenType
     {
-        INTERGER = 0,
-        PLUS = 1,
-        MINUS = 2,
-        MULTIPLE = 3,
-        DIVIDE = 4,
-        LPAREN = 5,
-        RPAREN = 6,
+        // Constant Number
+        INTEGER_CONST = 10,
+        REAL_CONST = 11,
+        // Types
+        INTEGER = 20,
+        REAL = 21,
+        // Operators
+        PLUS = 61,
+        MINUS = 62,
+        MULTIPLE = 63,
+        DIVIDE = 64,
+        LPAREN = 65,
+        RPAREN = 66,
+        INTEGER_DIV = 67,
+        REAL_DIV = 68,
+        // Reserved Keywords
+        BEGIN = 71,
+        END = 72,
+        PROGRAM = 73,
+        VAR = 74,
+        COMMA = 75,
+        COLON = 76,
+        // Others
+        ID = 81,
+        ASSIGN = 80,
+        SEMI = 81,
+        DOT = 82,
 
-        BEGIN = 7,
-        END = 8,
-        ID = 9,
-        ASSIGN = 10,
-        SEMI = 11,
-        DOT = 12,
+
 
         EOF = 99,
     }
@@ -41,7 +56,7 @@ namespace ConsoleApp2
 
         public static void AddSampleOperator()
         {
-            listOperator.Add(TokenType.INTERGER, false);
+            listOperator.Add(TokenType.INTEGER_CONST, false);
             listOperator.Add(TokenType.PLUS, true);
             listOperator.Add(TokenType.MINUS, true);
             listOperator.Add(TokenType.MULTIPLE, true);

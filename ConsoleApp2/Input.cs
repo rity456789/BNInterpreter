@@ -10,7 +10,8 @@ namespace ConsoleApp2
     {
         public static string Read()
         {
-            return "BEGIN BEGIN x:= 2*2; y:=(8+2)*10/(2+3) END; END.";
+            //return "PROGRAM TestAST; VAR y: REAL; BEGIN  y := 12 DIV 3 DIV 4; END.";
+            return "PROGRAM TestAST; VAR a, b : INTEGER; y: REAL; BEGIN {Comment} a := 2; b := 10 * a + 10 * a DIV 4; y := 20 / 7 + 3.14; END. {Comment}";
         }
     }
 }

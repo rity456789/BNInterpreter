@@ -46,9 +46,13 @@
     <Compile Include="AbstractSyntaxTree\Assign.cs" />
     <Compile Include="AbstractSyntaxTree\AST.cs" />
     <Compile Include="AbstractSyntaxTree\BinOP.cs" />
+    <Compile Include="AbstractSyntaxTree\Block.cs" />
     <Compile Include="AbstractSyntaxTree\Compound.cs" />
     <Compile Include="AbstractSyntaxTree\NoOP.cs" />
+    <Compile Include="AbstractSyntaxTree\ProgramAST.cs" />
+    <Compile Include="AbstractSyntaxTree\TypeAST.cs" />
     <Compile Include="AbstractSyntaxTree\Var.cs" />
+    <Compile Include="AbstractSyntaxTree\VariableDeclaration.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Lexer.cs" />

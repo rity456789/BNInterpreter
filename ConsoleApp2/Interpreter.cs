@@ -19,18 +19,19 @@ namespace ConsoleApp2
             this.parser = parser;   
         }
 
-        public int VisitBinOP(BinOP node)
+        public object VisitBinOP(BinOP node)
         {
-            if (node.op.type == TokenType.PLUS) return this.Visit(node.left) + this.Visit(node.right);
-            else if (node.op.type == TokenType.MINUS) return this.Visit(node.left) - this.Visit(node.right);
-            else if (node.op.type == TokenType.MULTIPLE) return this.Visit(node.left) * this.Visit(node.right);
-            else if (node.op.type == TokenType.DIVIDE) return this.Visit(node.left) / this.Visit(node.right);
+            if (node.op.type == TokenType.PLUS) return Convert.ToSingle(this.Visit(node.left)) + Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.MINUS) return Convert.ToSingle(this.Visit(node.left)) - Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.MULTIPLE) return Convert.ToSingle(this.Visit(node.left)) * Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.INTEGER_DIV) return (int)(Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right)));
+            else if (node.op.type == TokenType.REAL_DIV) return Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right));
             else throw new Exception("Error visit BinOP");
         }
 
-        public int VisitNum(Num node)
+        public object VisitNum(Num node)
         {
-            return Int32.Parse(node.value);
+            return node.value;
         }
 
         public int VisitUnaryOP(UnaryOP node)
@@ -38,22 +39,14 @@ namespace ConsoleApp2
             TokenType op = node.op.type;
             if (op == TokenType.PLUS)
             {
-                return this.Visit(node.expression);
+                return (int)this.Visit(node.expression);
             }
             else if (op == TokenType.MINUS)
             {
-                return -this.Visit(node.expression);
+                return -(int)this.Visit(node.expression);
             }
             else throw new Exception("Error visit UnaryOP");
         }
-
-        //private int Visit(AST node)
-        //{
-        //    if (node.GetType().Name == "Num") return VisitNum((Num)node);
-        //    else if (node.GetType().Name == "BinOP") return VisitBinOP((BinOP)node);
-        //    else if (node.GetType().Name == "UnaryOP") return VisitUnaryOP((UnaryOP)node);
-        //    else throw new Exception("Unsigned type of AST");
-        //}
 
         public int VisitCompound(AST node)
         {
@@ -106,7 +99,34 @@ namespace ConsoleApp2
         public int Interpret()
         {
             var tree = parser.Parse();
-            return this.Visit(tree);
+            return (int)this.Visit(tree);
+        }
+
+        public int VisitProgramAST(ProgramAST node)
+        {
+            this.Visit(node.block);
+            return 0;
+        }
+
+        public int VisitBlock(Block node)
+        {
+            foreach(VariableDeclaration declaration in node.declarations)
+            {
+                this.Visit(declaration);
+            }
+            this.Visit(node.compoundStatement);
+
+            return 0;
+        }
+
+        public int VisitVariableDeclaration(AST node)
+        {
+            return 0;
+        }
+
+        public int VisitTypeAST(AST node)
+        {
+            return 0;
         }
     }
 }

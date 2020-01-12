@@ -40,11 +40,87 @@ namespace ConsoleApp2
             }
         }
 
+        private Block Block()
+        {
+            List<VariableDeclaration> declarationNodes = this.Declarations();
+            Compound CompoundStatementNode = this.CompoundStatement();
+            Block node = new Block(declarationNodes, CompoundStatementNode);
+
+            return node;
+        }
+
+
+        private List<VariableDeclaration> Declarations()
+        {
+            List<VariableDeclaration> declarations = new List<VariableDeclaration>();
+            if(this.currentToken.type == TokenType.VAR)
+            {
+                this.Eat(TokenType.VAR);
+                while(this.currentToken.type == TokenType.ID)
+                {
+                    List<VariableDeclaration> varDecl = this.VariableDeclaration();
+                    declarations.AddRange(varDecl);
+                    this.Eat(TokenType.SEMI);
+                }
+            }
+
+            return declarations;
+        }
+
+        private List<VariableDeclaration> VariableDeclaration()
+        {
+            List<Var> varNodes = new List<Var>();
+            varNodes.Add(new Var(this.currentToken));
+            this.Eat(TokenType.ID);
+
+            while(this.currentToken.type == TokenType.COMMA)
+            {
+                this.Eat(TokenType.COMMA);
+                varNodes.Add(new AbstractSyntaxTree.Var(this.currentToken));
+                this.Eat(TokenType.ID);
+            }
+
+            this.Eat(TokenType.COLON);
+
+            TypeAST typeNode = this.TypeSpec();
+            List<VariableDeclaration> varDeclarations = new List<VariableDeclaration>();
+            foreach(Var varNode in varNodes)
+            {
+                varDeclarations.Add(new VariableDeclaration(varNode, typeNode));
+            }
+
+            return varDeclarations;
+        }
+
+        private TypeAST TypeSpec()
+        {
+            Token token = this.currentToken;
+            if(this.currentToken.type == TokenType.INTEGER)
+            {
+                this.Eat(TokenType.INTEGER);
+            }
+            else
+            {
+                this.Eat(TokenType.REAL);
+            }
+
+            TypeAST node = new TypeAST(token);
+
+            return node;
+        }
+
         private AST Program()
         {
-            AST node = this.CompoundStatement();
+            this.Eat(TokenType.PROGRAM);
+            Var varNode = (Var)this.Variable();
+            string programName = varNode.value;
+
+            this.Eat(TokenType.SEMI);
+            Block blockNode = this.Block();
+            ProgramAST programNode = new ProgramAST(programName, blockNode);
+
             this.Eat(TokenType.DOT);
-            return node;
+            return programNode;
         }
 
         private Compound CompoundStatement()
@@ -160,7 +236,11 @@ namespace ConsoleApp2
             AST node = this.Factor();
 
             //TO DO: code ngu
-            while (this.currentToken.type == TokenType.DIVIDE || this.currentToken.type == TokenType.MULTIPLE)
+            while (
+                this.currentToken.type == TokenType.INTEGER_DIV 
+                || this.currentToken.type == TokenType.MULTIPLE
+                || this.currentToken.type == TokenType.REAL_DIV
+                )
             {
                 Token token = this.currentToken;
 
@@ -168,9 +248,13 @@ namespace ConsoleApp2
                 {
                     Eat(TokenType.MULTIPLE);
                 }
-                else if (token.type == TokenType.DIVIDE)
+                else if (token.type == TokenType.INTEGER_DIV)
                 {
-                    Eat(TokenType.DIVIDE);
+                    Eat(TokenType.INTEGER_DIV);
+                }
+                else if (token.type == TokenType.REAL_DIV)
+                {
+                    Eat(TokenType.REAL_DIV);
                 }
 
                 node = new BinOP(node, token, Factor());
@@ -195,12 +279,16 @@ namespace ConsoleApp2
                 var node = new UnaryOP(token, Factor());
                 return node;
             }
-            else if (token.type == TokenType.INTERGER)
+            else if (token.type == TokenType.INTEGER_CONST)
             {
-                Eat(TokenType.INTERGER);
+                Eat(TokenType.INTEGER_CONST);
                 return new Num(token);
             }
-           
+            else if (token.type == TokenType.REAL_CONST)
+            {
+                Eat(TokenType.REAL_CONST);
+                return new Num(token);
+            }
             else if (token.type == TokenType.LPAREN)
             {
                 Eat(TokenType.LPAREN);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,11 @@ namespace ConsoleApp2
         {
             RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
             RESERVED_KEYWORDS.Add("END", new Token(TokenType.END, "END"));
+            RESERVED_KEYWORDS.Add("VAR", new Token(TokenType.VAR, "VAR"));
+            RESERVED_KEYWORDS.Add("PROGRAM", new Token(TokenType.PROGRAM, "PROGRAM"));
+            RESERVED_KEYWORDS.Add("INTEGER", new Token(TokenType.INTEGER, "INTEGER"));
+            RESERVED_KEYWORDS.Add("REAL", new Token(TokenType.REAL, "REAL"));
+            RESERVED_KEYWORDS.Add("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
         }
 
         private bool IsEnd()
@@ -46,6 +52,54 @@ namespace ConsoleApp2
             {
                 this.AdvanceCurrentChar();
             }
+        }
+
+        private void SkipComment()
+        {
+            while(this.currentChar != '}')
+            {
+                this.AdvanceCurrentChar();
+            }
+
+            this.AdvanceCurrentChar();
+        }
+
+        private Token Number()
+        {
+            string result = "";
+            Token token;
+            // Lấy phần nguyên
+            while(!IsEnd() && Char.IsDigit(this.currentChar))
+            {
+                result += this.currentChar;
+                this.AdvanceCurrentChar();
+            }
+
+            // Lấy phần thập phân
+            if(this.currentChar == '.')
+            {
+                result += this.currentChar;
+                this.AdvanceCurrentChar();
+
+                while(!IsEnd() && Char.IsDigit(this.currentChar))
+                {
+                    result += this.currentChar;
+                    this.AdvanceCurrentChar();
+                }
+
+                token = new Token(TokenType.REAL_CONST, result);
+            }
+            else
+            {
+                token = new Token(TokenType.INTEGER_CONST, result);
+            }
+
+            return token;
+        }
+
+        private float ParseFloat(string value)
+        {
+            return float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
         }
 
         private Token _id()
@@ -69,35 +123,64 @@ namespace ConsoleApp2
         {
             while(!this.IsEnd())
             {
+                // White space
                 if(Char.IsWhiteSpace(this.currentChar))
                 {
                     this.SkipWhiteSpace();
                     continue;
                 }
+                // Identifiers/Reserved words
                 else if(Char.IsLetter(this.currentChar))
                 {
                     return this._id();
                 }
+                // Digit
                 else if (Char.IsDigit(currentChar))
                 {
-                    return new Token(TokenType.INTERGER, GetInteger());
+                    return this.Number();
                 }
+                // Assign
                 else if(this.currentChar == ':' && this.peek() == '=')
                 {
                     this.AdvanceCurrentChar();
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.ASSIGN, currentChar.ToString());
                 }
+                // End statement
                 else if(this.currentChar == ';')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.SEMI, currentChar.ToString());
                 }
+                // End program
                 else if(this.currentChar == '.')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.DOT, currentChar.ToString());
                 }
+                // Comment
+                else if(this.currentChar == '{')
+                {
+                    this.AdvanceCurrentChar();
+                    this.SkipComment();
+                    continue;
+                }
+                else if (this.currentChar == ':')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.COLON, currentChar.ToString());
+                }
+                else if (this.currentChar == ',')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.COMMA, currentChar.ToString());
+                }
+                else if(this.currentChar == '/')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.REAL_DIV, currentChar.ToString());
+                }
+                // Operators
                 else
                 {
                     var currentOperator = currentChar;
@@ -169,11 +252,6 @@ namespace ConsoleApp2
             }
 
             currentChar = text[pos];
-        }
-
-        private string OptimizeText(string inputText)
-        {
-            return inputText.Replace(" ", ""); 
         }
 
         private char peek()

@@ -21,6 +21,7 @@ namespace ConsoleApp2
             int result = interpreter.Interpret();
 
             Console.WriteLine(interpreter.GLOBAL_SCOPE["y"]);
+            Console.WriteLine(interpreter.GLOBAL_SCOPE["b"]);
         }
     }
 }
