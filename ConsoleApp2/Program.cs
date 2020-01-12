@@ -12,20 +12,15 @@ namespace ConsoleApp2
         {
             Token.AddSampleOperator();
             Lexer.InitReservedKeywords();
+            
+            string text = Input.Read();
 
-            while (true)
-            {
-                string text;
-                
-                text = Input.Read();
+            Lexer lexer = new Lexer(text);
+            Parser parser = new Parser(lexer);
+            Interpreter interpreter = new Interpreter(parser);
+            int result = interpreter.Interpret();
 
-                Lexer lexer = new Lexer(text);
-                Parser parser = new Parser(lexer);
-                Interpreter interpreter = new Interpreter(parser);
-                int result = interpreter.Interpret();
-
-                Console.WriteLine(result);
-            }
+            Console.WriteLine(interpreter.GLOBAL_SCOPE["y"]);
         }
     }
 }

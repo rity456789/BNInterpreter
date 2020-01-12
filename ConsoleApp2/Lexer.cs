@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
+
     class Lexer
     {
         private const char ENDCHAR = '@';
@@ -13,14 +14,51 @@ namespace ConsoleApp2
         private string text;
         private int pos;
         private char currentChar;
+        private int peekPos;
+
+        private static Dictionary<string, Token> RESERVED_KEYWORDS = new Dictionary<string, Token>();
+
         public Lexer(string inputText)
         {
-            text = OptimizeText(inputText);
+            text = inputText;
             pos = 0;
+            peekPos = 0;
             if (text.Length > 0)
             {
                 currentChar = text[pos];
             }
+        }
+
+        public static void InitReservedKeywords()
+        {
+            RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
+            RESERVED_KEYWORDS.Add("END", new Token(TokenType.END, "END"));
+        }
+
+        private bool IsEnd()
+        {
+            return this.currentChar == ENDCHAR;
+        }
+
+        private void SkipWhiteSpace()
+        {
+            while(!IsEnd() && Char.IsWhiteSpace(this.currentChar))
+            {
+                this.AdvanceCurrentChar();
+            }
+        }
+
+        private Token _id()
+        {
+            var result = "";
+
+            while(!this.IsEnd() && Char.IsLetterOrDigit(this.currentChar))
+            {
+                result += currentChar;
+                this.AdvanceCurrentChar();
+            }
+
+            return RESERVED_KEYWORDS.ContainsKey(result) ? RESERVED_KEYWORDS[result] : new Token(TokenType.ID, result);
         }
 
         /// <summary>
@@ -29,23 +67,47 @@ namespace ConsoleApp2
         /// <returns></returns>
         public Token GetNextToken()
         {
-            if (pos > text.Length - 1)
+            while(!this.IsEnd())
             {
-                return new Token(TokenType.EOF, null);
+                if(Char.IsWhiteSpace(this.currentChar))
+                {
+                    this.SkipWhiteSpace();
+                    continue;
+                }
+                else if(Char.IsLetter(this.currentChar))
+                {
+                    return this._id();
+                }
+                else if (Char.IsDigit(currentChar))
+                {
+                    return new Token(TokenType.INTERGER, GetInteger());
+                }
+                else if(this.currentChar == ':' && this.peek() == '=')
+                {
+                    this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.ASSIGN, currentChar.ToString());
+                }
+                else if(this.currentChar == ';')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.SEMI, currentChar.ToString());
+                }
+                else if(this.currentChar == '.')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.DOT, currentChar.ToString());
+                }
+                else
+                {
+                    var currentOperator = currentChar;
+                    AdvanceCurrentChar();
+
+                    return GetTokenOperator(currentOperator);
+                }
             }
 
-            if (char.IsDigit(currentChar))
-            {
-                return new Token(TokenType.INTERGER, GetInteger());
-
-            }
-            else
-            {
-                var currentOperator = currentChar;
-                AdvanceCurrentChar();
-
-                return GetTokenOperator(currentOperator);
-            }
+            return new Token(TokenType.EOF, null);
 
         }
 
@@ -98,18 +160,33 @@ namespace ConsoleApp2
         /// </summary>
         private void AdvanceCurrentChar()
         {
-            if (pos > text.Length - 2)
+            pos++;
+
+            if (pos > text.Length - 1)
             {
                 currentChar = ENDCHAR;
                 return;
             }
-            pos++;
+
             currentChar = text[pos];
         }
 
         private string OptimizeText(string inputText)
         {
             return inputText.Replace(" ", ""); 
+        }
+
+        private char peek()
+        {
+            this.peekPos = this.pos + 1;
+            if (this.peekPos > this.text.Length - 1)
+            {
+                return ' ';
+            }
+            else
+            {
+                return this.text[peekPos];
+            }
         }
     }
 }

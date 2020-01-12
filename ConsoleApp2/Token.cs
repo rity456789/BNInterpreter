@@ -15,10 +15,16 @@ namespace ConsoleApp2
         DIVIDE = 4,
         LPAREN = 5,
         RPAREN = 6,
+
+        BEGIN = 7,
+        END = 8,
+        ID = 9,
+        ASSIGN = 10,
+        SEMI = 11,
+        DOT = 12,
+
         EOF = 99,
     }
-
-
 
     class Token
     {
@@ -49,7 +55,6 @@ namespace ConsoleApp2
 
         public bool IsOperator()
         {
-
             return listOperator.ContainsKey(this.type) && listOperator[this.type];
         }
     }

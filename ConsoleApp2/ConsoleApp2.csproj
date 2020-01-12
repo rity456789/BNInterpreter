@@ -43,17 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AST.cs" />
-    <Compile Include="BinOP.cs" />
+    <Compile Include="AbstractSyntaxTree\Assign.cs" />
+    <Compile Include="AbstractSyntaxTree\AST.cs" />
+    <Compile Include="AbstractSyntaxTree\BinOP.cs" />
+    <Compile Include="AbstractSyntaxTree\Compound.cs" />
+    <Compile Include="AbstractSyntaxTree\NoOP.cs" />
+    <Compile Include="AbstractSyntaxTree\Var.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="NodeVisitor.cs" />
-    <Compile Include="Num.cs" />
+    <Compile Include="AbstractSyntaxTree\Num.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />
-    <Compile Include="UnaryOP.cs" />
+    <Compile Include="AbstractSyntaxTree\UnaryOP.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.AbstractSyntaxTree
 {
-    class Num : AST
+    class Var : AST
     {
         public Token token;
         public string value;
 
-        public Num(Token token)
+        public Var(Token inputToken)
         {
-            this.token = token;
-            this.value = token.value;
+            this.token = inputToken;
+            this.value = inputToken.value;
         }
     }
 }

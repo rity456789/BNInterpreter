@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.AbstractSyntaxTree
 {
-    class Input
+    class NoOP : AST
     {
-        public static string Read()
+        public NoOP()
         {
-            return "BEGIN BEGIN x:= 2*2; y:=(8+2)*10/(2+3) END; END.";
+
         }
     }
 }
