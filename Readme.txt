@@ -1,0 +1,1 @@
+copy input.txt vào cùng thư mục với file thực thi
