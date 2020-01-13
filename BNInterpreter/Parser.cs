@@ -77,7 +77,7 @@ namespace BNInterpreter
             while (this.currentToken.type == TokenType.COMMA)
             {
                 this.Eat(TokenType.COMMA);
-                varNodes.Add(new AbstractSyntaxTree.Var(this.currentToken));
+                varNodes.Add(new Var(this.currentToken));
                 this.Eat(TokenType.ID);
             }
 

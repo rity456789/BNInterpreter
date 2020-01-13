@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractSyntaxTree", "Abstr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenNamespace", "TokenNamespace\TokenNamespace.csproj", "{F7483424-E0DA-4393-8C4E-EFA6067A6F5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymbolNamespace", "SymbolNamespace\SymbolNamespace.csproj", "{EC80D234-8DED-4FD7-A7D4-F66769DD6031}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F7483424-E0DA-4393-8C4E-EFA6067A6F5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7483424-E0DA-4393-8C4E-EFA6067A6F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7483424-E0DA-4393-8C4E-EFA6067A6F5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC80D234-8DED-4FD7-A7D4-F66769DD6031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC80D234-8DED-4FD7-A7D4-F66769DD6031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC80D234-8DED-4FD7-A7D4-F66769DD6031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC80D234-8DED-4FD7-A7D4-F66769DD6031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

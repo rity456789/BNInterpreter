@@ -16,7 +16,6 @@ namespace BNInterpreter
         private string text;
         private int pos;
         private char currentChar;
-        private int peekPos;
 
         private static Dictionary<string, Token> RESERVED_KEYWORDS = new Dictionary<string, Token>();
 
@@ -24,7 +23,6 @@ namespace BNInterpreter
         {
             text = inputText;
             pos = 0;
-            peekPos = 0;
             if (text.Length > 0)
             {
                 currentChar = text[pos];
@@ -257,8 +255,8 @@ namespace BNInterpreter
 
         private char peek()
         {
-            this.peekPos = this.pos + 1;
-            if (this.peekPos > this.text.Length - 1)
+            var peekPos = this.pos + 1;
+            if (peekPos > this.text.Length - 1)
             {
                 return ' ';
             }
