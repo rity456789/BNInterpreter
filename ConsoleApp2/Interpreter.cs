@@ -1,13 +1,14 @@
-﻿using System;
+﻿using AbstractSyntaxTree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TokenNamespace;
 
 
 namespace ConsoleApp2
 {
-    using AbstractSyntaxTree;
 
     class Interpreter : NodeVisitor
     {

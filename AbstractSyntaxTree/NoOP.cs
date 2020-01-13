@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2.AbstractSyntaxTree
+namespace AbstractSyntaxTree
 {
-    class AST
+    public class NoOP : AST
     {
+        public NoOP()
+        {
+
+        }
     }
 }

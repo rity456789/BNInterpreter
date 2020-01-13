@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2.AbstractSyntaxTree
+namespace AbstractSyntaxTree
 {
-    class Compound : AST
+    public class Compound : AST
     {
         // BEGIN .. END block
 

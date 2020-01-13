@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2.AbstractSyntaxTree
+namespace AbstractSyntaxTree
 {
-    class VariableDeclaration : AST
+    public class VariableDeclaration : AST
     {
         public Var varNode;
         public TypeAST typeNode;

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TokenNamespace;
 
-namespace ConsoleApp2.AbstractSyntaxTree
+namespace AbstractSyntaxTree
 {
-    class Var : AST
+    public class Var : AST
     {
         public Token token;
         public string value;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2
+namespace TokenNamespace
 {
-    enum TokenType
+    public enum TokenType
     {
         // Constant Number
         INTEGER_CONST = 10,
@@ -41,7 +41,7 @@ namespace ConsoleApp2
         EOF = 99,
     }
 
-    class Token
+    public class Token
     {
         private static Dictionary<TokenType, bool> listOperator = new Dictionary<TokenType, bool>();
         //private List<TokenType> listOperator = new List<TokenType>((int)TokenType.PLUS);

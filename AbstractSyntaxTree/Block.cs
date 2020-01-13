@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2.AbstractSyntaxTree
+namespace AbstractSyntaxTree
 {
-    class Block : AST
+    public class Block : AST
     {
         public List<VariableDeclaration> declarations;
         public Compound compoundStatement;
