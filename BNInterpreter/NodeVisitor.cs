@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
     using AbstractSyntaxTree;
 

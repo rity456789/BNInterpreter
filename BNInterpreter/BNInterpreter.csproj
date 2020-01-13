@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9D368D8C-AEA5-4B91-ABE3-185BA54875FA}</ProjectGuid>
+    <ProjectGuid>{E32FDA03-D966-4256-A88C-5FCFC6D38E87}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleApp2</RootNamespace>
-    <AssemblyName>ConsoleApp2</AssemblyName>
+    <RootNamespace>BNInterpreter</RootNamespace>
+    <AssemblyName>BNInterpreter</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,11 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Input.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="NodeVisitor.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,11 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AbstractSyntaxTree\AbstractSyntaxTree.csproj">
-      <Project>{805b09ef-c94d-4500-b0d7-a67f6efbfc21}</Project>
+      <Project>{bca8bdea-7d10-4c19-aec1-1c7d202b05ff}</Project>
       <Name>AbstractSyntaxTree</Name>
     </ProjectReference>
     <ProjectReference Include="..\TokenNamespace\TokenNamespace.csproj">
-      <Project>{70300f6d-c67a-4a08-8123-40c3b310feaa}</Project>
+      <Project>{f7483424-e0da-4393-8c4e-efa6067a6f5d}</Project>
       <Name>TokenNamespace</Name>
     </ProjectReference>
   </ItemGroup>

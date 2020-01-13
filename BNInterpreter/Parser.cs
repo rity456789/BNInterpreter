@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TokenNamespace;
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
     using AbstractSyntaxTree;
 
@@ -54,10 +54,10 @@ namespace ConsoleApp2
         private List<VariableDeclaration> Declarations()
         {
             List<VariableDeclaration> declarations = new List<VariableDeclaration>();
-            if(this.currentToken.type == TokenType.VAR)
+            if (this.currentToken.type == TokenType.VAR)
             {
                 this.Eat(TokenType.VAR);
-                while(this.currentToken.type == TokenType.ID)
+                while (this.currentToken.type == TokenType.ID)
                 {
                     List<VariableDeclaration> varDecl = this.VariableDeclaration();
                     declarations.AddRange(varDecl);
@@ -74,7 +74,7 @@ namespace ConsoleApp2
             varNodes.Add(new Var(this.currentToken));
             this.Eat(TokenType.ID);
 
-            while(this.currentToken.type == TokenType.COMMA)
+            while (this.currentToken.type == TokenType.COMMA)
             {
                 this.Eat(TokenType.COMMA);
                 varNodes.Add(new AbstractSyntaxTree.Var(this.currentToken));
@@ -85,7 +85,7 @@ namespace ConsoleApp2
 
             TypeAST typeNode = this.TypeSpec();
             List<VariableDeclaration> varDeclarations = new List<VariableDeclaration>();
-            foreach(Var varNode in varNodes)
+            foreach (Var varNode in varNodes)
             {
                 varDeclarations.Add(new VariableDeclaration(varNode, typeNode));
             }
@@ -96,7 +96,7 @@ namespace ConsoleApp2
         private TypeAST TypeSpec()
         {
             Token token = this.currentToken;
-            if(this.currentToken.type == TokenType.INTEGER)
+            if (this.currentToken.type == TokenType.INTEGER)
             {
                 this.Eat(TokenType.INTEGER);
             }
@@ -164,9 +164,9 @@ namespace ConsoleApp2
         {
             AST node;
 
-            if(currentToken.type == TokenType.BEGIN)
+            if (currentToken.type == TokenType.BEGIN)
             {
-                node = this.CompoundStatement();    
+                node = this.CompoundStatement();
             }
             else if (currentToken.type == TokenType.ID)
             {
@@ -238,7 +238,7 @@ namespace ConsoleApp2
 
             //TO DO: code ngu
             while (
-                this.currentToken.type == TokenType.INTEGER_DIV 
+                this.currentToken.type == TokenType.INTEGER_DIV
                 || this.currentToken.type == TokenType.MULTIPLE
                 || this.currentToken.type == TokenType.REAL_DIV
                 )
@@ -305,13 +305,13 @@ namespace ConsoleApp2
         }
 
 
-       
+
 
         public AST Parse()
         {
             AST node = this.Program();
 
-            if(this.currentToken.type != TokenType.EOF)
+            if (this.currentToken.type != TokenType.EOF)
             {
                 throw this.error();
             }

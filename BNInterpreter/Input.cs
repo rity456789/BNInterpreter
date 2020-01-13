@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
     class Input
     {
         public static string Read()
         {
-            string path = Directory.GetCurrentDirectory()+"\\input.txt";
+            string path = Directory.GetCurrentDirectory() + "\\input.txt";
 
             string content = File.ReadAllText(path, Encoding.UTF8);
             return content;

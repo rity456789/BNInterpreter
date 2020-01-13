@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TokenNamespace;
 
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
 
     class Interpreter : NodeVisitor
@@ -17,7 +17,7 @@ namespace ConsoleApp2
 
         public Interpreter(Parser parser)
         {
-            this.parser = parser;   
+            this.parser = parser;
         }
 
         public object VisitBinOP(BinOP node)
@@ -51,7 +51,7 @@ namespace ConsoleApp2
 
         public int VisitCompound(AST node)
         {
-            foreach(AST child in ((Compound)node).children)
+            foreach (AST child in ((Compound)node).children)
             {
                 this.Visit(child);
             }
@@ -64,7 +64,7 @@ namespace ConsoleApp2
             Assign AssignNode = (Assign)node;
             Var Variable = (Var)AssignNode.left;
             string VarName = Variable.value;
-            if(GLOBAL_SCOPE.ContainsKey(VarName))
+            if (GLOBAL_SCOPE.ContainsKey(VarName))
             {
                 GLOBAL_SCOPE[VarName] = this.Visit(AssignNode.right);
             }
@@ -82,7 +82,7 @@ namespace ConsoleApp2
 
             object val = GLOBAL_SCOPE[VarName];
 
-            if(val == null)
+            if (val == null)
             {
                 throw new Exception("Variable not in global scope");
             }
@@ -111,7 +111,7 @@ namespace ConsoleApp2
 
         public int VisitBlock(Block node)
         {
-            foreach(VariableDeclaration declaration in node.declarations)
+            foreach (VariableDeclaration declaration in node.declarations)
             {
                 this.Visit(declaration);
             }

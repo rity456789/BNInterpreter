@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{805B09EF-C94D-4500-B0D7-A67F6EFBFC21}</ProjectGuid>
+    <ProjectGuid>{BCA8BDEA-7D10-4C19-AEC1-1C7D202B05FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AbstractSyntaxTree</RootNamespace>
@@ -42,22 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assign.cs" />
+    <Compile Include="AST.cs" />
     <Compile Include="BinOP.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Compound.cs" />
     <Compile Include="NoOP.cs" />
     <Compile Include="Num.cs" />
+    <Compile Include="ProgramAST.cs" />
     <Compile Include="TypeAST.cs" />
     <Compile Include="UnaryOP.cs" />
-    <Compile Include="VariableDeclaration.cs" />
     <Compile Include="Var.cs" />
-    <Compile Include="ProgramAST.cs" />
-    <Compile Include="AST.cs" />
+    <Compile Include="VariableDeclaration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TokenNamespace\TokenNamespace.csproj">
-      <Project>{70300f6d-c67a-4a08-8123-40c3b310feaa}</Project>
+      <Project>{f7483424-e0da-4393-8c4e-efa6067a6f5d}</Project>
       <Name>TokenNamespace</Name>
     </ProjectReference>
   </ItemGroup>

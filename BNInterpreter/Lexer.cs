@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TokenNamespace;
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
 
     class Lexer
@@ -49,7 +49,7 @@ namespace ConsoleApp2
 
         private void SkipWhiteSpace()
         {
-            while(!IsEnd() && Char.IsWhiteSpace(this.currentChar))
+            while (!IsEnd() && Char.IsWhiteSpace(this.currentChar))
             {
                 this.AdvanceCurrentChar();
             }
@@ -57,7 +57,7 @@ namespace ConsoleApp2
 
         private void SkipComment()
         {
-            while(this.currentChar != '}')
+            while (this.currentChar != '}')
             {
                 this.AdvanceCurrentChar();
             }
@@ -70,19 +70,19 @@ namespace ConsoleApp2
             string result = "";
             Token token;
             // Lấy phần nguyên
-            while(!IsEnd() && Char.IsDigit(this.currentChar))
+            while (!IsEnd() && Char.IsDigit(this.currentChar))
             {
                 result += this.currentChar;
                 this.AdvanceCurrentChar();
             }
 
             // Lấy phần thập phân
-            if(this.currentChar == '.')
+            if (this.currentChar == '.')
             {
                 result += this.currentChar;
                 this.AdvanceCurrentChar();
 
-                while(!IsEnd() && Char.IsDigit(this.currentChar))
+                while (!IsEnd() && Char.IsDigit(this.currentChar))
                 {
                     result += this.currentChar;
                     this.AdvanceCurrentChar();
@@ -107,7 +107,7 @@ namespace ConsoleApp2
         {
             var result = "";
 
-            while(!this.IsEnd() && Char.IsLetterOrDigit(this.currentChar))
+            while (!this.IsEnd() && Char.IsLetterOrDigit(this.currentChar))
             {
                 result += currentChar;
                 this.AdvanceCurrentChar();
@@ -122,16 +122,16 @@ namespace ConsoleApp2
         /// <returns></returns>
         public Token GetNextToken()
         {
-            while(!this.IsEnd())
+            while (!this.IsEnd())
             {
                 // White space
-                if(Char.IsWhiteSpace(this.currentChar))
+                if (Char.IsWhiteSpace(this.currentChar))
                 {
                     this.SkipWhiteSpace();
                     continue;
                 }
                 // Identifiers/Reserved words
-                else if(Char.IsLetter(this.currentChar))
+                else if (Char.IsLetter(this.currentChar))
                 {
                     return this._id();
                 }
@@ -141,26 +141,26 @@ namespace ConsoleApp2
                     return this.Number();
                 }
                 // Assign
-                else if(this.currentChar == ':' && this.peek() == '=')
+                else if (this.currentChar == ':' && this.peek() == '=')
                 {
                     this.AdvanceCurrentChar();
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.ASSIGN, currentChar.ToString());
                 }
                 // End statement
-                else if(this.currentChar == ';')
+                else if (this.currentChar == ';')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.SEMI, currentChar.ToString());
                 }
                 // End program
-                else if(this.currentChar == '.')
+                else if (this.currentChar == '.')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.DOT, currentChar.ToString());
                 }
                 // Comment
-                else if(this.currentChar == '{')
+                else if (this.currentChar == '{')
                 {
                     this.AdvanceCurrentChar();
                     this.SkipComment();
@@ -176,7 +176,7 @@ namespace ConsoleApp2
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.COMMA, currentChar.ToString());
                 }
-                else if(this.currentChar == '/')
+                else if (this.currentChar == '/')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.REAL_DIV, currentChar.ToString());

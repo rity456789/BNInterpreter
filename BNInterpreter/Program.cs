@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TokenNamespace;
 
-namespace ConsoleApp2
+namespace BNInterpreter
 {
     class Program
     {
