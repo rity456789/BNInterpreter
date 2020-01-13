@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Interpreter.cs" />
     <Compile Include="Lexer.cs" />
-    <Compile Include="NodeVisitor.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Program.cs" />
@@ -58,6 +57,10 @@
     <ProjectReference Include="..\AbstractSyntaxTree\AbstractSyntaxTree.csproj">
       <Project>{bca8bdea-7d10-4c19-aec1-1c7d202b05ff}</Project>
       <Name>AbstractSyntaxTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SymbolNamespace\SymbolNamespace.csproj">
+      <Project>{ec80d234-8ded-4fd7-a7d4-f66769dd6031}</Project>
+      <Name>SymbolNamespace</Name>
     </ProjectReference>
     <ProjectReference Include="..\TokenNamespace\TokenNamespace.csproj">
       <Project>{f7483424-e0da-4393-8c4e-efa6067a6f5d}</Project>

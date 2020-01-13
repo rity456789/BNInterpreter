@@ -13,15 +13,24 @@ namespace SymbolNamespace
         public SymbolTable()
         {
             symbols = new Dictionary<string, Symbol>();
+            this.InitBuiltIns();
+        }
+
+        private void InitBuiltIns()
+        {
+            this.Define(new BuiltinTypeSymbol("INTERGER"));
+            this.Define(new BuiltinTypeSymbol("REAL"));
         }
 
         public void Define(Symbol symbol)
         {
+            Console.WriteLine("Define " + symbol.name);
             symbols[symbol.name] = symbol;
         }
 
         public Symbol Lookup(string name)
         {
+            Console.WriteLine("Lookup " + name);
             if (symbols.ContainsKey(name))
             {
                 return symbols[name];

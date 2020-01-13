@@ -46,6 +46,7 @@
     <Compile Include="BinOP.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Compound.cs" />
+    <Compile Include="NodeVisitor.cs" />
     <Compile Include="NoOP.cs" />
     <Compile Include="Num.cs" />
     <Compile Include="ProgramAST.cs" />

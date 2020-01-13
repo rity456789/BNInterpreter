@@ -45,7 +45,14 @@
     <Compile Include="Symbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SymbolTable.cs" />
+    <Compile Include="SymbolTableBuilder.cs" />
     <Compile Include="VarSymbol.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbstractSyntaxTree\AbstractSyntaxTree.csproj">
+      <Project>{bca8bdea-7d10-4c19-aec1-1c7d202b05ff}</Project>
+      <Name>AbstractSyntaxTree</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
 
-
-namespace BNInterpreter
+namespace AbstractSyntaxTree
 {
-    using AbstractSyntaxTree;
-
-    class NodeVisitor
+    public class NodeVisitor
     {
 
         //TO DO: do not implement
