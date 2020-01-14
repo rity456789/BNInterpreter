@@ -11,11 +11,11 @@ namespace BNInterpreter
 {
     class SemanticAnalyzer : NodeVisitor
     {
-        private SymbolTable symtab;
+        private ScopedSymbolTable currentScope;
 
         public SemanticAnalyzer()
         {
-            symtab = new SymbolTable();
+            currentScope = null;
         }
 
         public void VisitBlock(Block node)
@@ -29,7 +29,11 @@ namespace BNInterpreter
 
         public void VisitProgramAST(ProgramAST node)
         {
+            Console.WriteLine("Enter scope: global");
+            var globalScope = new ScopedSymbolTable("global", 1, this.currentScope);
+            this.currentScope = globalScope;
             this.Visit(node.block);
+            this.currentScope = this.currentScope.enclosingScope;
         }
 
         public void VisitBinOP(BinOP node)
@@ -62,22 +66,42 @@ namespace BNInterpreter
         public void VisitVariableDeclaration(VariableDeclaration node)
         {
             var typeName = node.typeNode.value;
-            var typeSymbol = this.symtab.Lookup(typeName);
+            var typeSymbol = this.currentScope.Lookup(typeName);
 
             var varName = node.varNode.value;
             var varSymbol = new VarSymbol(varName, typeSymbol);
 
-            if(this.symtab.Lookup(varName) != null)
+            if (this.currentScope.Lookup(varName, true) != null)
             {
                 ErrorsHandler.ShowError("Duplicate declare variable: " + varName);
             }
 
-            this.symtab.Insert(varSymbol);
+            this.currentScope.Insert(varSymbol);
         }
 
         public void VisitProcedureDeclaration(ProcedureDeclaration node)
         {
+            var procName = node.procName;
+            var procSymbol = new ProcedureSymbol(procName);
+            this.currentScope.Insert(procSymbol);
 
+            Console.WriteLine("Enter scope: " + procName);
+            var procedureScope = new ScopedSymbolTable(procName, this.currentScope.scopeLevel + 1, this.currentScope);
+            this.currentScope = procedureScope;
+
+            foreach (var param in node._params)
+            {
+                var paramType = this.currentScope.Lookup(param.typeNode.value);
+                var paramName = param.varNode.value;
+                var varSymbol = new VarSymbol(paramName, paramType);
+                this.currentScope.Insert(varSymbol);
+                procSymbol._params.Add(varSymbol);
+            }
+
+            this.Visit(node.blockNode);
+
+            this.currentScope = this.currentScope.enclosingScope;
+            Console.WriteLine("Leave scope: " + procName);
         }
 
         public void VisitAssign(AST node)
@@ -85,7 +109,7 @@ namespace BNInterpreter
             Assign assignNode = (Assign)node;
             Var variable = (Var)assignNode.left;
             string varName = variable.value;
-            var varSymbol = this.symtab.Lookup(varName);
+            var varSymbol = this.currentScope.Lookup(varName);
             if (varSymbol == null)
             {
                 ErrorsHandler.ShowError("Do not declare variable name: " + varName);
@@ -96,7 +120,7 @@ namespace BNInterpreter
         public void VisitVar(AST node)
         {
             var varName = ((Var)node).value;
-            var varSymbol = this.symtab.Lookup(varName);
+            var varSymbol = this.currentScope.Lookup(varName);
 
             if (varSymbol == null)
             {

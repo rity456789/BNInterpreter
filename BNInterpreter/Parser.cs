@@ -54,30 +54,83 @@ namespace BNInterpreter
         private List<AST> Declarations()
         {
             List<AST> declarations = new List<AST>();
-            while (this.currentToken.type == TokenType.VAR)
+
+            while (true)
             {
-                this.Eat(TokenType.VAR);
-                while (this.currentToken.type == TokenType.ID)
+                if (this.currentToken.type == TokenType.VAR)
                 {
-                    List<VariableDeclaration> varDecl = this.VariableDeclaration();
-                    declarations.AddRange(varDecl);
+                    this.Eat(TokenType.VAR);
+                    while (this.currentToken.type == TokenType.ID)
+                    {
+                        List<VariableDeclaration> varDecl = this.VariableDeclaration();
+                        declarations.AddRange(varDecl);
+                        this.Eat(TokenType.SEMI);
+                    }
+                }
+
+                else if (this.currentToken.type == TokenType.PROCEDURE)
+                {
+                    this.Eat(TokenType.PROCEDURE);
+                    var procName = this.currentToken.value;
+                    this.Eat(TokenType.ID);
+                    var _params = new List<Param>();
+
+                    if (this.currentToken.type == TokenType.LPAREN)
+                    {
+                        this.Eat(TokenType.LPAREN);
+                        _params = this.FormalParameterList();
+                        this.Eat(TokenType.RPAREN);
+                    }
+
+                    this.Eat(TokenType.SEMI);
+                    var blockNode = this.Block();
+                    var procDeclaration = new ProcedureDeclaration(procName, _params, blockNode);
+                    declarations.Add(procDeclaration);
                     this.Eat(TokenType.SEMI);
                 }
-            }
-
-            while (this.currentToken.type == TokenType.PROCEDURE)
-            {
-                this.Eat(TokenType.PROCEDURE);
-                var procName = this.currentToken.value;
-                this.Eat(TokenType.ID);
-                this.Eat(TokenType.SEMI);
-                var blockNode = this.Block();
-                var procDeclaration = new ProcedureDeclaration(procName, blockNode);
-                declarations.Add(procDeclaration);
-                this.Eat(TokenType.SEMI);
-            }
-
+                else break;
+            }            
             return declarations;
+        }
+
+        private List<Param> FormalParameterList()
+        {
+            if (this.currentToken.type != TokenType.ID)
+            {
+                return new List<Param>();
+            }
+
+            var paramNodes = this.FormalParameters();
+
+            while (this.currentToken.type == TokenType.SEMI)
+            {
+                this.Eat(TokenType.SEMI);
+                paramNodes.AddRange(this.FormalParameters());
+            }
+            return paramNodes;
+        }
+
+        private List<Param> FormalParameters()
+        {
+            var paramNodes = new List<Param>();
+            var paramTokens = new List<Token>();
+            paramTokens.Add(this.currentToken);
+            this.Eat(TokenType.ID);
+            while (this.currentToken.type == TokenType.COMMA)
+            {
+                this.Eat(TokenType.COMMA);
+                paramTokens.Add(this.currentToken);
+                this.Eat(TokenType.ID);
+            }
+            this.Eat(TokenType.COLON);
+            var typeNode = this.TypeSpec();
+
+            foreach (var paramToken in paramTokens)
+            {
+                var paramNode = new Param(new Var(paramToken), typeNode);
+                paramNodes.Add(paramNode);
+            }
+            return paramNodes;
         }
 
         private List<VariableDeclaration> VariableDeclaration()

@@ -49,6 +49,7 @@
     <Compile Include="NodeVisitor.cs" />
     <Compile Include="NoOP.cs" />
     <Compile Include="Num.cs" />
+    <Compile Include="Param.cs" />
     <Compile Include="ProgramAST.cs" />
     <Compile Include="TypeAST.cs" />
     <Compile Include="UnaryOP.cs" />

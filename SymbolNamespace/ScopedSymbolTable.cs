@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace SymbolNamespace
 {
-    public class SymbolTable
+    public class ScopedSymbolTable
     {
-        private Dictionary<string, Symbol> symbols;
+        public Dictionary<string, Symbol> symbols;
+        public string scopeName;
+        public int scopeLevel;
+        public ScopedSymbolTable enclosingScope;
 
-        public SymbolTable()
+        public ScopedSymbolTable(string scopeName, int scopeLevel, ScopedSymbolTable enclosingScope = null)
         {
+            this.scopeName = scopeName;
+            this.scopeLevel = scopeLevel;
             symbols = new Dictionary<string, Symbol>();
+            this.enclosingScope = enclosingScope;
             this.InitBuiltIns();
         }
 
@@ -34,12 +40,16 @@ namespace SymbolNamespace
             symbols[symbol.name] = symbol;
         }
 
-        public Symbol Lookup(string name)
+        public Symbol Lookup(string name, bool onCurrentScopeOnly = false)
         {
             Console.WriteLine("Lookup " + name);
             if (symbols.ContainsKey(name))
             {
                 return symbols[name];
+            }
+            else if (!onCurrentScopeOnly && this.enclosingScope != null)
+            {
+                return this.enclosingScope.Lookup(name);
             }
             else return null;
         }
