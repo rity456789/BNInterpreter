@@ -49,6 +49,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SemanticAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -57,6 +58,10 @@
     <ProjectReference Include="..\AbstractSyntaxTree\AbstractSyntaxTree.csproj">
       <Project>{bca8bdea-7d10-4c19-aec1-1c7d202b05ff}</Project>
       <Name>AbstractSyntaxTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Errors\Errors.csproj">
+      <Project>{baef99ff-6883-4d87-a32f-d36bcc4b957e}</Project>
+      <Name>Errors</Name>
     </ProjectReference>
     <ProjectReference Include="..\SymbolNamespace\SymbolNamespace.csproj">
       <Project>{ec80d234-8ded-4fd7-a7d4-f66769dd6031}</Project>

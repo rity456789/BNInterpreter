@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SymbolNamespace;
+using Errors;
 
-namespace SymbolNamespace
+namespace BNInterpreter
 {
-    public class SymbolTableBuilder : NodeVisitor
+    class SemanticAnalyzer : NodeVisitor
     {
         private SymbolTable symtab;
 
-        public SymbolTableBuilder()
+        public SemanticAnalyzer()
         {
             symtab = new SymbolTable();
         }
@@ -64,6 +66,12 @@ namespace SymbolNamespace
 
             var varName = node.varNode.value;
             var varSymbol = new VarSymbol(varName, typeSymbol);
+
+            if(this.symtab.Lookup(varName) != null)
+            {
+                ErrorsHandler.ShowError("Duplicate declare variable: " + varName);
+            }
+
             this.symtab.Insert(varSymbol);
         }
 
@@ -73,28 +81,26 @@ namespace SymbolNamespace
         }
 
         public void VisitAssign(AST node)
-        {
+        {//con khac
             Assign assignNode = (Assign)node;
             Var variable = (Var)assignNode.left;
             string varName = variable.value;
             var varSymbol = this.symtab.Lookup(varName);
-            if(varSymbol == null)
+            if (varSymbol == null)
             {
-                Console.WriteLine("Do not declare variable name: " + varName);
-                Environment.Exit(0);
+                ErrorsHandler.ShowError("Do not declare variable name: " + varName);
             }
             this.Visit(assignNode.right);
         }
-        
+
         public void VisitVar(AST node)
         {
             var varName = ((Var)node).value;
             var varSymbol = this.symtab.Lookup(varName);
 
-            if(varSymbol == null)
+            if (varSymbol == null)
             {
-                Console.WriteLine("Do not declare variable name: " + varName);
-                Environment.Exit(0);
+                ErrorsHandler.ShowError("Do not declare variable name: " + varName);
             }
         }
     }

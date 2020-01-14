@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SymbolNamespace
 {
-    class BuiltinTypeSymbol : Symbol
+    public class BuiltinTypeSymbol : Symbol
     {
         public BuiltinTypeSymbol(string name) : base(name)
         {

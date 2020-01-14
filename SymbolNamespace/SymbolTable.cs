@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SymbolNamespace
 {
-    class SymbolTable
+    public class SymbolTable
     {
         private Dictionary<string, Symbol> symbols;
 
@@ -18,13 +18,19 @@ namespace SymbolNamespace
 
         private void InitBuiltIns()
         {
-            this.Define(new BuiltinTypeSymbol("INTEGER"));
-            this.Define(new BuiltinTypeSymbol("REAL"));
+            this.Insert(new BuiltinTypeSymbol("INTEGER"));
+            this.Insert(new BuiltinTypeSymbol("REAL"));
         }
 
-        public void Define(Symbol symbol)
+        //public void Define(Symbol symbol)
+        //{
+        //    Console.WriteLine("Define " + symbol.name);
+        //    symbols[symbol.name] = symbol;
+        //}
+
+        public void Insert(Symbol symbol)
         {
-            Console.WriteLine("Define " + symbol.name);
+            Console.WriteLine("Insert " + symbol.name);
             symbols[symbol.name] = symbol;
         }
 

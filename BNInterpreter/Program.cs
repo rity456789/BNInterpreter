@@ -29,8 +29,8 @@ namespace BNInterpreter
 
             //test Symbol
             var tree = parser.Parse();
-            var symtabBuilder = new SymbolTableBuilder();
-            symtabBuilder.Visit(tree);
+            var semanticAnalyzer = new SemanticAnalyzer();
+            semanticAnalyzer.Visit(tree);
         }
     }
 }

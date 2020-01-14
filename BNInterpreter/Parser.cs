@@ -54,7 +54,7 @@ namespace BNInterpreter
         private List<AST> Declarations()
         {
             List<AST> declarations = new List<AST>();
-            if (this.currentToken.type == TokenType.VAR)
+            while (this.currentToken.type == TokenType.VAR)
             {
                 this.Eat(TokenType.VAR);
                 while (this.currentToken.type == TokenType.ID)

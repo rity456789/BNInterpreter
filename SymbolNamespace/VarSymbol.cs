@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SymbolNamespace
 {
-    class VarSymbol : Symbol
+    public class VarSymbol : Symbol
     {
         public VarSymbol(string name, Symbol type) : base(name, type)
         {

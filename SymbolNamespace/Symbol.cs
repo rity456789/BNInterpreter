@@ -10,6 +10,7 @@ namespace SymbolNamespace
     {
         public string name;
         public Symbol type;
+        public object category;
 
         public Symbol(string name, Symbol type = null)
         {
