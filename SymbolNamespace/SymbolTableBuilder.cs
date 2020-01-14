@@ -18,7 +18,7 @@ namespace SymbolNamespace
 
         public void VisitBlock(Block node)
         {
-            foreach (VariableDeclaration declaration in node.declarations)
+            foreach (AST declaration in node.declarations)
             {
                 this.Visit(declaration);
             }
@@ -65,6 +65,11 @@ namespace SymbolNamespace
             var varName = node.varNode.value;
             var varSymbol = new VarSymbol(varName, typeSymbol);
             this.symtab.Define(varSymbol);
+        }
+
+        public void VisitProcedureDeclaration(ProcedureDeclaration node)
+        {
+
         }
 
         public void VisitAssign(AST node)

@@ -43,7 +43,7 @@ namespace BNInterpreter
 
         private Block Block()
         {
-            List<VariableDeclaration> declarationNodes = this.Declarations();
+            List<AST> declarationNodes = this.Declarations();
             Compound CompoundStatementNode = this.CompoundStatement();
             Block node = new Block(declarationNodes, CompoundStatementNode);
 
@@ -51,9 +51,9 @@ namespace BNInterpreter
         }
 
 
-        private List<VariableDeclaration> Declarations()
+        private List<AST> Declarations()
         {
-            List<VariableDeclaration> declarations = new List<VariableDeclaration>();
+            List<AST> declarations = new List<AST>();
             if (this.currentToken.type == TokenType.VAR)
             {
                 this.Eat(TokenType.VAR);
@@ -63,6 +63,18 @@ namespace BNInterpreter
                     declarations.AddRange(varDecl);
                     this.Eat(TokenType.SEMI);
                 }
+            }
+
+            while (this.currentToken.type == TokenType.PROCEDURE)
+            {
+                this.Eat(TokenType.PROCEDURE);
+                var procName = this.currentToken.value;
+                this.Eat(TokenType.ID);
+                this.Eat(TokenType.SEMI);
+                var blockNode = this.Block();
+                var procDeclaration = new ProcedureDeclaration(procName, blockNode);
+                declarations.Add(procDeclaration);
+                this.Eat(TokenType.SEMI);
             }
 
             return declarations;

@@ -30,6 +30,7 @@ namespace TokenNamespace
         VAR = 74,
         COMMA = 75,
         COLON = 76,
+        PROCEDURE = 77,
         // Others
         ID = 81,
         ASSIGN = 80,

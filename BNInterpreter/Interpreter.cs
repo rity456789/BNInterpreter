@@ -111,7 +111,7 @@ namespace BNInterpreter
 
         public int VisitBlock(Block node)
         {
-            foreach (VariableDeclaration declaration in node.declarations)
+            foreach (AST declaration in node.declarations)
             {
                 this.Visit(declaration);
             }

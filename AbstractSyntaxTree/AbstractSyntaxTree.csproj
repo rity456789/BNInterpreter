@@ -53,6 +53,7 @@
     <Compile Include="TypeAST.cs" />
     <Compile Include="UnaryOP.cs" />
     <Compile Include="Var.cs" />
+    <Compile Include="ProcedureDeclaration.cs" />
     <Compile Include="VariableDeclaration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

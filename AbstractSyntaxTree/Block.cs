@@ -8,10 +8,10 @@ namespace AbstractSyntaxTree
 {
     public class Block : AST
     {
-        public List<VariableDeclaration> declarations;
+        public List<AST> declarations;
         public Compound compoundStatement;
 
-        public Block(List<VariableDeclaration> inputDeclare, Compound inputCompound)
+        public Block(List<AST> inputDeclare, Compound inputCompound)
         {
             declarations = inputDeclare;
             compoundStatement = inputCompound;

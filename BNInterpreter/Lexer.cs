@@ -38,6 +38,7 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("INTEGER", new Token(TokenType.INTEGER, "INTEGER"));
             RESERVED_KEYWORDS.Add("REAL", new Token(TokenType.REAL, "REAL"));
             RESERVED_KEYWORDS.Add("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
+            RESERVED_KEYWORDS.Add("PROCEDURE", new Token(TokenType.PROCEDURE, "PROCEDURE"));
         }
 
         private bool IsEnd()

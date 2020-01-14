@@ -18,7 +18,7 @@ namespace SymbolNamespace
 
         private void InitBuiltIns()
         {
-            this.Define(new BuiltinTypeSymbol("INTERGER"));
+            this.Define(new BuiltinTypeSymbol("INTEGER"));
             this.Define(new BuiltinTypeSymbol("REAL"));
         }
 
