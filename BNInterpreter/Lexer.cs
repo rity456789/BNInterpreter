@@ -51,8 +51,8 @@ namespace BNInterpreter
         /// </summary>
         public static void InitReservedKeywords()
         {
-            RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
-            RESERVED_KEYWORDS.Add("END", new Token(TokenType.END, "END"));
+            //RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
+            //RESERVED_KEYWORDS.Add("END", new Token(TokenType.END, "END"));
             RESERVED_KEYWORDS.Add("VAR", new Token(TokenType.VAR, "VAR"));
             RESERVED_KEYWORDS.Add("PROGRAM", new Token(TokenType.PROGRAM, "PROGRAM"));
             RESERVED_KEYWORDS.Add("INTEGER", new Token(TokenType.INTEGER, "INTEGER"));
@@ -91,7 +91,7 @@ namespace BNInterpreter
         /// </summary>
         private void SkipComment()
         {
-            while (this.currentChar != '}')
+            while (this.currentChar != '\n')
             {
                 this.AdvanceCurrentChar();
             }
@@ -183,11 +183,21 @@ namespace BNInterpreter
                     continue;
                 }
                 //Nếu là comment thì bỏ qua
-                else if (this.currentChar == '{')
+                else if (this.currentChar == '#')
                 {
                     this.AdvanceCurrentChar();
                     this.SkipComment();
                     continue;
+                }
+                else if (this.currentChar == '{')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.BEGIN, "{", this.lineno, this.column);
+                }
+                else if (this.currentChar == '}')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.END, "}", this.lineno, this.column);
                 }
                 //Token Id(1 là Reserved words, 2 là Identifiers)
                 else if (Char.IsLetter(this.currentChar))
