@@ -35,8 +35,8 @@ namespace Stack
 
         private void InitBuiltInProcs()
         {           
-            members.Add("PRINT", "VisitPrint");
-            builtinProcs.Add("PRINT", "VisitPrint");
+            members.Add("print", "VisitPrint");
+            builtinProcs.Add("print", "VisitPrint");
         }
 
         public object GetItem(string key)

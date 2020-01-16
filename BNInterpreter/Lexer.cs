@@ -53,16 +53,16 @@ namespace BNInterpreter
         {
             //RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
             //RESERVED_KEYWORDS.Add("END", new Token(TokenType.END, "END"));
-            RESERVED_KEYWORDS.Add("VAR", new Token(TokenType.VAR, "VAR"));
-            RESERVED_KEYWORDS.Add("PROGRAM", new Token(TokenType.PROGRAM, "PROGRAM"));
-            RESERVED_KEYWORDS.Add("INTEGER", new Token(TokenType.INTEGER, "INTEGER"));
-            RESERVED_KEYWORDS.Add("REAL", new Token(TokenType.REAL, "REAL"));
-            RESERVED_KEYWORDS.Add("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
-            RESERVED_KEYWORDS.Add("PROCEDURE", new Token(TokenType.PROCEDURE, "PROCEDURE"));
-            RESERVED_KEYWORDS.Add("RETURN", new Token(TokenType.RETURN, "RETURN"));
-            RESERVED_KEYWORDS.Add("IF", new Token(TokenType.IF, "IF"));
-            RESERVED_KEYWORDS.Add("ELSE", new Token(TokenType.ELSE, "ELSE"));
-            RESERVED_KEYWORDS.Add("WHILE", new Token(TokenType.WHILE, "WHILE"));
+            RESERVED_KEYWORDS.Add("var", new Token(TokenType.VAR, "VAR"));
+            RESERVED_KEYWORDS.Add("program", new Token(TokenType.PROGRAM, "PROGRAM"));
+            RESERVED_KEYWORDS.Add("int", new Token(TokenType.INTEGER, "INTEGER"));
+            RESERVED_KEYWORDS.Add("real", new Token(TokenType.REAL, "REAL"));
+            RESERVED_KEYWORDS.Add("div", new Token(TokenType.INTEGER_DIV, "DIV"));
+            RESERVED_KEYWORDS.Add("function", new Token(TokenType.PROCEDURE, "PROCEDURE"));
+            RESERVED_KEYWORDS.Add("return", new Token(TokenType.RETURN, "RETURN"));
+            RESERVED_KEYWORDS.Add("if", new Token(TokenType.IF, "IF"));
+            RESERVED_KEYWORDS.Add("else", new Token(TokenType.ELSE, "ELSE"));
+            RESERVED_KEYWORDS.Add("while", new Token(TokenType.WHILE, "WHILE"));
         }
 
         /// <summary>
