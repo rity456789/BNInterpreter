@@ -34,11 +34,13 @@ namespace TokenNamespace
         COMMA = 75,
         COLON = 76,
         PROCEDURE = 77,
+        RETURN = 78,
         // Others
         ID = 81,
         ASSIGN = 82,
         SEMI = 83,
         DOT = 84,
+
 
 
 

@@ -40,6 +40,7 @@ namespace BNInterpreter
             }
             else
             {
+                throw new Exception();
                 this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
         }
@@ -342,6 +343,15 @@ namespace BNInterpreter
             {
                 return this.AssignmentStatement();
             }
+            else if (this.currentToken.type == TokenType.RETURN)
+            {
+                this.Eat(TokenType.RETURN);
+                return new Return(this.currentToken, this.Expression());
+            }
+            //else if (this.currentToken.type == TokenType.PRINT)
+            //{
+
+            //}
             else
             {
                 return this.Empty();
@@ -366,7 +376,6 @@ namespace BNInterpreter
         private AST Variable()
         {
             // Lấy variable và tạo identifiers
-
             AST node = new Var(this.currentToken);
             this.Eat(TokenType.ID);
 
@@ -473,6 +482,10 @@ namespace BNInterpreter
                 var node = Expression();
                 Eat(TokenType.RPAREN);
                 return node;
+            }
+            else if (currentToken.type == TokenType.ID && this.lexer.currentChar == '(')
+            {
+                return this.ProcCallStatement();
             }
             else
             {

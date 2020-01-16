@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TokenNamespace;
-
+using SymbolNamespace;
+using Stack;
+using System.Reflection;
 
 namespace BNInterpreter
 {
@@ -14,11 +16,13 @@ namespace BNInterpreter
     {
         // Sử dụng mẫu Visitor để duyệt cây AST và execute tại mỗi node
         private Parser parser;
-        public Dictionary<string, object> GLOBAL_SCOPE = new Dictionary<string, object>();
+        //public Dictionary<string, object> GLOBAL_SCOPE = new Dictionary<string, object>();
+        private CallStack callStack;
 
         public Interpreter(Parser parser)
         {
             this.parser = parser;
+            this.callStack = new CallStack();
         }
 
         /// <summary>
@@ -70,11 +74,15 @@ namespace BNInterpreter
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public int VisitCompound(AST node)
+        public object VisitCompound(AST node)
         {
             // Visit compound gồm nhiều statement, mỗi child là một statement
             foreach (AST child in ((Compound)node).children)
             {
+                if(child.GetType().Name.ToString() == "Return")
+                {
+                    return this.Visit(child);
+                }
                 this.Visit(child);
             }
 
@@ -94,15 +102,8 @@ namespace BNInterpreter
 
             string VarName = Variable.value;
 
-            if (GLOBAL_SCOPE.ContainsKey(VarName))
-            {
-                GLOBAL_SCOPE[VarName] = this.Visit(AssignNode.right);
-            }
-            else
-            {
-                GLOBAL_SCOPE.Add(VarName, this.Visit(AssignNode.right));
-            }
-
+            ActivationRecord ar = (ActivationRecord)this.callStack.Peek();
+            ar.SetItem(VarName, Visit(AssignNode.right));
             return 0;
         }
 
@@ -116,16 +117,10 @@ namespace BNInterpreter
 
             string VarName = ((Var)node).value;
 
-            object val = GLOBAL_SCOPE[VarName];
+            ActivationRecord ar = (ActivationRecord)this.callStack.Peek();
+            var value = ar.GetItem(VarName);
 
-            if (val == null)
-            {
-                throw new Exception("Variable not in global scope");
-            }
-            else
-            {
-                return val;
-            }
+            return value;
         }
 
         /// <summary>
@@ -145,7 +140,15 @@ namespace BNInterpreter
         /// <returns></returns>
         public int VisitProgramAST(ProgramAST node)
         {
+            string programName = node.name;
+
+            ActivationRecord ar = new ActivationRecord(programName, ARTYPE.PROGRAM, 1);
+            callStack.Push(ar);
+
             this.Visit(node.block);
+
+            callStack.Pop();
+
             return 0;
         }
 
@@ -154,7 +157,7 @@ namespace BNInterpreter
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public int VisitBlock(Block node)
+        public object VisitBlock(Block node)
         {
             // Đầu tiên xử lý tất cả declarations
             foreach (AST declaration in node.declarations)
@@ -162,10 +165,8 @@ namespace BNInterpreter
                 this.Visit(declaration);
             }
 
-            // Sau đó mới thực hiện compound
-            this.Visit(node.compoundStatement);
 
-            return 0;
+            return this.Visit(node.compoundStatement);
         }
 
         public int VisitVariableDeclaration(AST node)
@@ -178,11 +179,66 @@ namespace BNInterpreter
             return 0;
         }
 
-        public int VisitProcedureCall(ProcedureCall node)
+        public object VisitProcedureCall(ProcedureCall node)
+        {
+            ActivationRecord curScope = this.callStack.Peek();
+
+            if(curScope.builtinProcs.ContainsKey(node.procName))
+            {
+                var method = curScope.builtinProcs[node.procName];
+                List<object> actual = new List<object>();
+                for (int i = 0; i < node.actualParams.Count; i++)
+                {
+                    var temp = node.actualParams[i];
+                    actual.Add(Visit(temp));
+                }
+
+                Type thisType = this.GetType();
+                MethodInfo theMethod = thisType.GetMethod(method);
+                return theMethod.Invoke(this, actual.ToArray());
+            }
+
+            ProcedureDeclaration proc = (ProcedureDeclaration)curScope.GetItem(node.procName);
+
+            ActivationRecord newScope = new ActivationRecord(node.procName, ARTYPE.PROCEDURE, curScope.nestingLevel + 1, curScope);
+            for (int i = 0; i < node.actualParams.Count; i++)
+            {
+                var temp = node.actualParams[i];
+                newScope.SetItem(proc._params[i].varNode.token.value, Visit(temp));
+            }
+
+            callStack.Push(newScope);
+            this.Visit(proc.blockNode);
+            var result = this.Visit(proc.blockNode);
+            callStack.Pop();
+            return result;
+        }
+
+        public int VisitParam(Param node)
         {
             return 0;
         }
-        
+
+        public int VisitProcedureDeclaration(ProcedureDeclaration node)
+        {
+            string procName = node.procName;
+            var blockNode = node.blockNode;
+
+            ActivationRecord ar = this.callStack.Peek();
+            ar.SetItem(procName, node);
+            return 0;
+        }
+
+        public object VisitReturn(Return node)
+        {
+            return Visit(node.result);
+        }
+
+        public void VisitPrint(object a)
+        {
+            Console.WriteLine(a);
+        }
+
         /// <summary>
         /// Thông dịch chương trình
         /// </summary>

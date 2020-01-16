@@ -52,6 +52,7 @@
     <Compile Include="Param.cs" />
     <Compile Include="ProcedureCall.cs" />
     <Compile Include="ProgramAST.cs" />
+    <Compile Include="Return.cs" />
     <Compile Include="TypeAST.cs" />
     <Compile Include="UnaryOP.cs" />
     <Compile Include="Var.cs" />

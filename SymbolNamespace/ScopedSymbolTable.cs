@@ -32,6 +32,7 @@ namespace SymbolNamespace
         {
             this.Insert(new BuiltinTypeSymbol("INTEGER"));
             this.Insert(new BuiltinTypeSymbol("REAL"));
+            //this.Insert(new ProcedureSymbol("PRINT"))
         }
 
         /// <summary>

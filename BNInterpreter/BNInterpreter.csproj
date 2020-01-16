@@ -63,6 +63,10 @@
       <Project>{baef99ff-6883-4d87-a32f-d36bcc4b957e}</Project>
       <Name>Errors</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Stack\Stack.csproj">
+      <Project>{3e38ec58-fc58-4038-96cd-a6d75a97c4cd}</Project>
+      <Name>Stack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SymbolNamespace\SymbolNamespace.csproj">
       <Project>{ec80d234-8ded-4fd7-a7d4-f66769dd6031}</Project>
       <Name>SymbolNamespace</Name>

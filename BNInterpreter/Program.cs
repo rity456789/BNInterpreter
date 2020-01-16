@@ -19,8 +19,8 @@ namespace BNInterpreter
 
             Lexer lexer = new Lexer(text);
             Parser parser = new Parser(lexer);
-            //Interpreter interpreter = new Interpreter(parser);
-            //int result = interpreter.Interpret();
+            Interpreter interpreter = new Interpreter(parser);
+            int result = interpreter.Interpret();
 
             //Console.WriteLine(interpreter.GLOBAL_SCOPE["y"]);
             //Console.WriteLine(interpreter.GLOBAL_SCOPE["b"]);
@@ -28,9 +28,9 @@ namespace BNInterpreter
 
 
             //test Symbol
-            var tree = parser.Parse();
-            var semanticAnalyzer = new SemanticAnalyzer();
-            semanticAnalyzer.Visit(tree);
+            //var tree = parser.Parse();
+            //var semanticAnalyzer = new SemanticAnalyzer();
+            //semanticAnalyzer.Visit(tree);
         }
     }
 }

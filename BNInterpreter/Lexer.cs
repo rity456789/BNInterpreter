@@ -59,6 +59,7 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("REAL", new Token(TokenType.REAL, "REAL"));
             RESERVED_KEYWORDS.Add("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
             RESERVED_KEYWORDS.Add("PROCEDURE", new Token(TokenType.PROCEDURE, "PROCEDURE"));
+            RESERVED_KEYWORDS.Add("RETURN", new Token(TokenType.RETURN, "RETURN"));
         }
 
         /// <summary>
