@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Errors;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace BNInterpreter
         private string text;
         private int pos;
         private char currentChar;
+        private int lineno;
+        private int column;
 
         private static Dictionary<string, Token> RESERVED_KEYWORDS = new Dictionary<string, Token>();
 
@@ -27,6 +30,15 @@ namespace BNInterpreter
             {
                 currentChar = text[pos];
             }
+            lineno = 1;
+            column = 1;
+        }
+
+        private void ShowError()
+        {
+            var message = "Lexer error on " + this.currentChar + " line: " + this.lineno + " column: " + this.column;
+            var error = new LexerError(message: message);
+            error.ShowError();
         }
 
         public static void InitReservedKeywords()
@@ -87,11 +99,11 @@ namespace BNInterpreter
                     this.AdvanceCurrentChar();
                 }
 
-                token = new Token(TokenType.REAL_CONST, result);
+                token = new Token(TokenType.REAL_CONST, result, this.lineno, this.column);
             }
             else
             {
-                token = new Token(TokenType.INTEGER_CONST, result);
+                token = new Token(TokenType.INTEGER_CONST, result, this.lineno, this.column);
             }
 
             return token;
@@ -112,7 +124,7 @@ namespace BNInterpreter
                 this.AdvanceCurrentChar();
             }
 
-            return RESERVED_KEYWORDS.ContainsKey(result) ? RESERVED_KEYWORDS[result] : new Token(TokenType.ID, result);
+            return RESERVED_KEYWORDS.ContainsKey(result) ? RESERVED_KEYWORDS[result] : new Token(TokenType.ID, result, this.lineno, this.column);
         }
 
         /// <summary>
@@ -127,6 +139,13 @@ namespace BNInterpreter
                 if (Char.IsWhiteSpace(this.currentChar))
                 {
                     this.SkipWhiteSpace();
+                    continue;
+                }
+                // Comment
+                else if (this.currentChar == '{')
+                {
+                    this.AdvanceCurrentChar();
+                    this.SkipComment();
                     continue;
                 }
                 // Identifiers/Reserved words
@@ -144,41 +163,35 @@ namespace BNInterpreter
                 {
                     this.AdvanceCurrentChar();
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.ASSIGN, currentChar.ToString());
+                    return new Token(TokenType.ASSIGN, currentChar.ToString(), this.lineno, this.column);
                 }
                 // End statement
                 else if (this.currentChar == ';')
                 {
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.SEMI, currentChar.ToString());
+                    return new Token(TokenType.SEMI, currentChar.ToString(), this.lineno, this.column);
                 }
                 // End program
                 else if (this.currentChar == '.')
                 {
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.DOT, currentChar.ToString());
+                    return new Token(TokenType.DOT, currentChar.ToString(), this.lineno, this.column);
                 }
-                // Comment
-                else if (this.currentChar == '{')
-                {
-                    this.AdvanceCurrentChar();
-                    this.SkipComment();
-                    continue;
-                }
+                
                 else if (this.currentChar == ':')
                 {
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.COLON, currentChar.ToString());
+                    return new Token(TokenType.COLON, currentChar.ToString(), this.lineno, this.column);
                 }
                 else if (this.currentChar == ',')
                 {
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.COMMA, currentChar.ToString());
+                    return new Token(TokenType.COMMA, currentChar.ToString(), this.lineno, this.column);
                 }
                 else if (this.currentChar == '/')
                 {
                     this.AdvanceCurrentChar();
-                    return new Token(TokenType.REAL_DIV, currentChar.ToString());
+                    return new Token(TokenType.REAL_DIV, currentChar.ToString(), this.lineno, this.column);
                 }
                 // Operators
                 else
@@ -190,7 +203,7 @@ namespace BNInterpreter
                 }
             }
 
-            return new Token(TokenType.EOF, null);
+            return new Token(TokenType.EOF, null, this.lineno, this.column);
 
         }
 
@@ -198,29 +211,29 @@ namespace BNInterpreter
         {
             if (currentOperator == '+')
             {
-                return new Token(TokenType.PLUS, currentOperator.ToString());
+                return new Token(TokenType.PLUS, currentOperator.ToString(), this.lineno, this.column);
             }
             else if (currentOperator == '-')
             {
-                return new Token(TokenType.MINUS, currentOperator.ToString());
+                return new Token(TokenType.MINUS, currentOperator.ToString(), this.lineno, this.column);
             }
             else if (currentOperator == '*')
             {
-                return new Token(TokenType.MULTIPLE, currentOperator.ToString());
+                return new Token(TokenType.MULTIPLE, currentOperator.ToString(), this.lineno, this.column);
             }
             else if (currentOperator == '/')
             {
-                return new Token(TokenType.DIVIDE, currentOperator.ToString());
+                return new Token(TokenType.DIVIDE, currentOperator.ToString(), this.lineno, this.column);
             }
             else if (currentOperator == '(')
             {
-                return new Token(TokenType.LPAREN, currentOperator.ToString());
+                return new Token(TokenType.LPAREN, currentOperator.ToString(), this.lineno, this.column);
             }
             else if (currentOperator == ')')
             {
-                return new Token(TokenType.RPAREN, currentOperator.ToString());
+                return new Token(TokenType.RPAREN, currentOperator.ToString(), this.lineno, this.column);
             }
-            else return new Token(TokenType.EOF, null);
+            else return new Token(TokenType.EOF, null, this.lineno, this.column);
         }
 
         /// <summary>
@@ -243,6 +256,11 @@ namespace BNInterpreter
         /// </summary>
         private void AdvanceCurrentChar()
         {
+            if (this.currentChar == '\n')
+            {
+                this.lineno += 1;
+                this.column = 0;
+            }
             pos++;
 
             if (pos > text.Length - 1)
@@ -252,6 +270,7 @@ namespace BNInterpreter
             }
 
             currentChar = text[pos];
+            this.column += 1;
         }
 
         private char peek()

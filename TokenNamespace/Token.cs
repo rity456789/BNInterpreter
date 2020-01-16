@@ -33,9 +33,9 @@ namespace TokenNamespace
         PROCEDURE = 77,
         // Others
         ID = 81,
-        ASSIGN = 80,
-        SEMI = 81,
-        DOT = 82,
+        ASSIGN = 82,
+        SEMI = 83,
+        DOT = 84,
 
 
 
@@ -48,11 +48,20 @@ namespace TokenNamespace
         //private List<TokenType> listOperator = new List<TokenType>((int)TokenType.PLUS);
         public TokenType type { get; private set; }
         public string value { get; private set; }
+        public int lineno;
+        public int column;
 
-        public Token(TokenType type, string value)
+        public Token(TokenType type, string value, int lineno = -1, int column = -1)
         {
             this.type = type;
             this.value = value;
+            this.lineno = lineno;
+            this.column = column;
+        }
+
+        public string ShowToken()
+        {
+            return "Token: " + this.type.ToString() + ", " + this.value + ", position = " + this.lineno + ":" + this.column;
         }
 
         public static void AddSampleOperator()

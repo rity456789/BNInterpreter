@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TokenNamespace;
+using Errors;
 
 namespace BNInterpreter
 {
@@ -20,9 +21,11 @@ namespace BNInterpreter
             currentToken = lexer.GetNextToken();
         }
 
-        private Exception error(string exception = "default")
+        private void ShowError(ErrorCode errorCode, Token token)
         {
-            return new Exception("Invalid Syntax");
+            var message = errorCode.ToString() + " -> " + token.ShowToken();
+            var error = new ParserError(errorCode, token, message);
+            error.ShowError();
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace BNInterpreter
             }
             else
             {
-                throw this.error();
+                this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
         }
 
@@ -70,27 +73,33 @@ namespace BNInterpreter
 
                 else if (this.currentToken.type == TokenType.PROCEDURE)
                 {
-                    this.Eat(TokenType.PROCEDURE);
-                    var procName = this.currentToken.value;
-                    this.Eat(TokenType.ID);
-                    var _params = new List<Param>();
-
-                    if (this.currentToken.type == TokenType.LPAREN)
-                    {
-                        this.Eat(TokenType.LPAREN);
-                        _params = this.FormalParameterList();
-                        this.Eat(TokenType.RPAREN);
-                    }
-
-                    this.Eat(TokenType.SEMI);
-                    var blockNode = this.Block();
-                    var procDeclaration = new ProcedureDeclaration(procName, _params, blockNode);
-                    declarations.Add(procDeclaration);
-                    this.Eat(TokenType.SEMI);
+                    ProcedureDeclaration procDecl = this.ProcedureDeclaration();
+                    declarations.Add(procDecl);                   
                 }
                 else break;
             }            
             return declarations;
+        }
+
+        private ProcedureDeclaration ProcedureDeclaration()
+        {
+            this.Eat(TokenType.PROCEDURE);
+            var procName = this.currentToken.value;
+            this.Eat(TokenType.ID);
+            var _params = new List<Param>();
+
+            if (this.currentToken.type == TokenType.LPAREN)
+            {
+                this.Eat(TokenType.LPAREN);
+                _params = this.FormalParameterList();
+                this.Eat(TokenType.RPAREN);
+            }
+
+            this.Eat(TokenType.SEMI);
+            var blockNode = this.Block();
+            var procDeclaration = new ProcedureDeclaration(procName, _params, blockNode);
+            this.Eat(TokenType.SEMI);
+            return procDeclaration;
         }
 
         private List<Param> FormalParameterList()
@@ -219,7 +228,7 @@ namespace BNInterpreter
 
             if (this.currentToken.type == TokenType.ID)
             {
-                throw this.error();
+                this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
 
             return results;
@@ -378,7 +387,7 @@ namespace BNInterpreter
 
             if (this.currentToken.type != TokenType.EOF)
             {
-                throw this.error();
+                this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
 
             return node;

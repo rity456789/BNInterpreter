@@ -42,7 +42,7 @@ namespace SymbolNamespace
 
         public Symbol Lookup(string name, bool onCurrentScopeOnly = false)
         {
-            Console.WriteLine("Lookup " + name);
+            Console.WriteLine("Lookup " + name + ", Scope name: " + this.scopeName);
             if (symbols.ContainsKey(name))
             {
                 return symbols[name];

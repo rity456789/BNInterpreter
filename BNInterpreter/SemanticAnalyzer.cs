@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SymbolNamespace;
 using Errors;
+using TokenNamespace;
 
 namespace BNInterpreter
 {
@@ -16,6 +17,13 @@ namespace BNInterpreter
         public SemanticAnalyzer()
         {
             currentScope = null;
+        }
+
+        private void ShowError(ErrorCode errorCode, Token token)
+        {
+            var message = errorCode.ToString() + " -> " + token.ShowToken();
+            var error = new SemanticError(errorCode, token, message);
+            error.ShowError();
         }
 
         public void VisitBlock(Block node)
@@ -73,7 +81,8 @@ namespace BNInterpreter
 
             if (this.currentScope.Lookup(varName, true) != null)
             {
-                ErrorsHandler.ShowError("Duplicate declare variable: " + varName);
+                this.ShowError(ErrorCode.DUPLICATE_ID, node.varNode.token);
+                //ErrorsHandler.ShowError("Duplicate declare variable: " + varName);
             }
 
             this.currentScope.Insert(varSymbol);
@@ -112,7 +121,8 @@ namespace BNInterpreter
             var varSymbol = this.currentScope.Lookup(varName);
             if (varSymbol == null)
             {
-                ErrorsHandler.ShowError("Do not declare variable name: " + varName);
+                
+                //ErrorsHandler.ShowError("Do not declare variable name: " + varName);
             }
             this.Visit(assignNode.right);
         }
@@ -124,7 +134,9 @@ namespace BNInterpreter
 
             if (varSymbol == null)
             {
-                ErrorsHandler.ShowError("Do not declare variable name: " + varName);
+                var varToken = ((Var)node).token;
+                this.ShowError(ErrorCode.ID_NOT_FOUND, varToken);
+                //ErrorsHandler.ShowError("Do not declare variable name: " + varName);
             }
         }
     }
