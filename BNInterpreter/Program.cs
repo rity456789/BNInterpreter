@@ -12,7 +12,7 @@ namespace BNInterpreter
     {
         static void Main(string[] args)
         {
-            //Token.AddSampleOperator();
+            Token.AddSampleCompareOperator();
             Lexer.InitReservedKeywords();
 
             string text = Input.Read();

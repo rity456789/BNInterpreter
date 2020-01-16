@@ -37,6 +37,12 @@ namespace BNInterpreter
             else if (node.op.type == TokenType.MULTIPLE) return Convert.ToSingle(this.Visit(node.left)) * Convert.ToSingle(this.Visit(node.right));
             else if (node.op.type == TokenType.INTEGER_DIV) return (int)(Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right)));
             else if (node.op.type == TokenType.REAL_DIV) return Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.EQUAL) return Convert.ToSingle(this.Visit(node.left)) == Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.NOT_EQUAL) return Convert.ToSingle(this.Visit(node.left)) != Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.GREATER_THAN) return Convert.ToSingle(this.Visit(node.left)) > Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.LESS_THAN) return Convert.ToSingle(this.Visit(node.left)) < Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.GREATER_THAN_OR_EQUAL) return Convert.ToSingle(this.Visit(node.left)) >= Convert.ToSingle(this.Visit(node.right));
+            else if (node.op.type == TokenType.LESS_THAN_OR_EQUAL) return Convert.ToSingle(this.Visit(node.left)) <= Convert.ToSingle(this.Visit(node.right));
             else throw new Exception("Error visit BinOP");
         }
 
@@ -184,17 +190,7 @@ namespace BNInterpreter
 
             if(curScope.builtinProcs.ContainsKey(node.procName))
             {
-                var method = curScope.builtinProcs[node.procName];
-                List<object> actual = new List<object>();
-                for (int i = 0; i < node.actualParams.Count; i++)
-                {
-                    var temp = node.actualParams[i];
-                    actual.Add(Visit(temp));
-                }
-
-                Type thisType = this.GetType();
-                MethodInfo theMethod = thisType.GetMethod(method);
-                return theMethod.Invoke(this, actual.ToArray());
+               return this.RunBuiltinProc(curScope, node);
             }
 
             ProcedureDeclaration proc = (ProcedureDeclaration)curScope.GetItem(node.procName);
@@ -207,10 +203,25 @@ namespace BNInterpreter
             }
 
             callStack.Push(newScope);
-            this.Visit(proc.blockNode);
             var result = this.Visit(proc.blockNode);
             callStack.Pop();
             return result;
+        }
+
+        private object RunBuiltinProc(ActivationRecord curScope, ProcedureCall node)
+        {
+            var method = curScope.builtinProcs[node.procName];
+            List<object> actual = new List<object>();
+            for (int i = 0; i < node.actualParams.Count; i++)
+            {
+                var temp = node.actualParams[i];
+                actual.Add(Visit(temp));
+            }
+
+            Type thisType = this.GetType();
+            MethodInfo theMethod = thisType.GetMethod(method);
+
+            return theMethod.Invoke(this, actual.ToArray());
         }
 
         public int VisitParam(Param node)
@@ -236,6 +247,26 @@ namespace BNInterpreter
         public void VisitPrint(object a)
         {
             Console.WriteLine(a);
+        }
+
+        public void VisitIf(If node)
+        {
+            if ((bool)Visit(node.expression))
+            {
+                this.Visit(node.ifBlock);
+            }
+            else
+            {
+                this.Visit(node.elseBlock);
+            }
+        }
+
+        public void VisitWhile(While node)
+        {
+            while((bool)Visit(node.expression))
+            {
+                this.Visit(node.whileBlock);
+            }
         }
 
         /// <summary>

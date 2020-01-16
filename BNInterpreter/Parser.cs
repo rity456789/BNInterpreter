@@ -348,14 +348,61 @@ namespace BNInterpreter
                 this.Eat(TokenType.RETURN);
                 return new Return(this.currentToken, this.Expression());
             }
-            //else if (this.currentToken.type == TokenType.PRINT)
-            //{
-
-            //}
+            else if (this.currentToken.type == TokenType.IF)
+            {
+                this.Eat(TokenType.IF);
+                return this.IfStatement();
+            }
+            else if (this.currentToken.type == TokenType.WHILE)
+            {
+                this.Eat(TokenType.WHILE);
+                return this.WhileStatement();
+            }
             else
             {
                 return this.Empty();
             }
+        }
+
+        private AST WhileStatement()
+        {
+            this.Eat(TokenType.LPAREN);
+            //Lấy biểu thức điều kiện  
+            var expression = this.CompareExpression();
+            this.Eat(TokenType.RPAREN);
+
+            Block whileBlock = this.Block();
+            return new While(expression, whileBlock);
+        }
+
+        private AST IfStatement()
+        {
+            this.Eat(TokenType.LPAREN);
+            //Lấy biểu thức điều kiện  
+            var expression = this.CompareExpression();
+            this.Eat(TokenType.RPAREN);
+
+            Block ifBlock = this.Block();
+            Block elseBlock = null;
+            if (this.currentToken.type == TokenType.ELSE)
+            {
+                this.Eat(TokenType.ELSE);
+                elseBlock = this.Block();
+            }         
+            
+            return new If(expression, ifBlock, elseBlock);
+        }
+
+        private BinOP CompareExpression()
+        {
+            var leftExpression = this.Expression();
+            var op = this.currentToken;
+            if(op.IsCompareOperator())
+            {
+                this.Eat(this.currentToken.type);
+            }
+            var rightExpression = this.Expression();
+            return new BinOP(leftExpression, op, rightExpression);
         }
 
         private AST AssignmentStatement()
@@ -396,7 +443,6 @@ namespace BNInterpreter
             // Xử lý expression, một expression có nhiều term, giữa mỗi term là operators cộng/trừ
             var node = Term();
 
-            //TO DO: code ngu
             while (currentToken.type == TokenType.PLUS || currentToken.type == TokenType.MINUS)
             {
                 var token = currentToken;

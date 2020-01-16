@@ -17,6 +17,13 @@ namespace TokenNamespace
         // Types
         INTEGER = 20,
         REAL = 21,
+        // Compare
+        EQUAL = 31,
+        NOT_EQUAL = 32,
+        GREATER_THAN = 33,
+        LESS_THAN = 34,
+        GREATER_THAN_OR_EQUAL = 35,
+        LESS_THAN_OR_EQUAL = 36,
         // Operators
         PLUS = 61,
         MINUS = 62,
@@ -35,16 +42,19 @@ namespace TokenNamespace
         COLON = 76,
         PROCEDURE = 77,
         RETURN = 78,
+        IF = 79,
+        ELSE = 80,
+        WHILE = 81,
         // Others
-        ID = 81,
-        ASSIGN = 82,
-        SEMI = 83,
-        DOT = 84,
+        ID = 91,
+        ASSIGN = 92,
+        SEMI = 93,
+        DOT = 94,
 
 
 
 
-        EOF = 99,
+        EOF = 199,
     }
 
     /// <summary>
@@ -52,7 +62,7 @@ namespace TokenNamespace
     /// </summary>
     public class Token
     {
-        //private static Dictionary<TokenType, bool> listOperator = new Dictionary<TokenType, bool>();
+        private static List<TokenType> listCompareOperator = new List<TokenType>();
         public TokenType type { get; private set; } //type
         public string value { get; private set; }   //giá trị
         public int lineno;                          //dòng
@@ -76,23 +86,19 @@ namespace TokenNamespace
             return "Token: " + this.type.ToString() + ", " + this.value + ", position = " + this.lineno + ":" + this.column;
         }
 
-        //public static void AddSampleOperator()
-        //{
-        //    listOperator.Add(TokenType.INTEGER_CONST, false);
-        //    listOperator.Add(TokenType.PLUS, true);
-        //    listOperator.Add(TokenType.MINUS, true);
-        //    listOperator.Add(TokenType.MULTIPLE, true);
-        //    listOperator.Add(TokenType.DIVIDE, true);
-        //    listOperator.Add(TokenType.LPAREN, false);
-        //    listOperator.Add(TokenType.RPAREN, false);
+        public static void AddSampleCompareOperator()
+        {
+            listCompareOperator.Add(TokenType.EQUAL);
+            listCompareOperator.Add(TokenType.NOT_EQUAL);
+            listCompareOperator.Add(TokenType.GREATER_THAN);
+            listCompareOperator.Add(TokenType.LESS_THAN);
+            listCompareOperator.Add(TokenType.GREATER_THAN_OR_EQUAL);
+            listCompareOperator.Add(TokenType.LESS_THAN_OR_EQUAL);
+        }
 
-
-        //    listOperator.Add(TokenType.EOF, false);
-        //}
-
-        //public bool IsOperator()
-        //{
-        //    return listOperator.ContainsKey(this.type) && listOperator[this.type];
-        //}
+        public bool IsCompareOperator()
+        {
+            return listCompareOperator.Contains(this.type);
+        }
     }
 }

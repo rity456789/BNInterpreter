@@ -60,6 +60,9 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
             RESERVED_KEYWORDS.Add("PROCEDURE", new Token(TokenType.PROCEDURE, "PROCEDURE"));
             RESERVED_KEYWORDS.Add("RETURN", new Token(TokenType.RETURN, "RETURN"));
+            RESERVED_KEYWORDS.Add("IF", new Token(TokenType.IF, "IF"));
+            RESERVED_KEYWORDS.Add("ELSE", new Token(TokenType.ELSE, "ELSE"));
+            RESERVED_KEYWORDS.Add("WHILE", new Token(TokenType.WHILE, "WHILE"));
         }
 
         /// <summary>
@@ -196,10 +199,44 @@ namespace BNInterpreter
                 {
                     return this.Number();
                 }
-                //Token assign
-                else if (this.currentChar == ':' && this.Peek() == '=')
+                else if(this.currentChar == '=' && this.Peek() == '=')
                 {
                     this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.EQUAL, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '!' && this.Peek() == '=')
+                {
+                    this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.NOT_EQUAL, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '>' && this.Peek() == '=')
+                {
+                    this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.GREATER_THAN_OR_EQUAL, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '<' && this.Peek() == '=')
+                {
+                    this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.LESS_THAN_OR_EQUAL, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '>')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.GREATER_THAN, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '<')
+                {
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.LESS_THAN, currentChar.ToString(), this.lineno, this.column);
+                }
+                
+                //Token assign
+                else if (this.currentChar == '=')
+                {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.ASSIGN, currentChar.ToString(), this.lineno, this.column);
                 }
