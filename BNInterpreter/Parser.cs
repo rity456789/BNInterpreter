@@ -52,9 +52,10 @@ namespace BNInterpreter
         private Block Block()
         {
             // Một Block có nhiều declarations và một compound
-
+            this.Eat(TokenType.BEGIN);
             List<AST> declarationNodes = this.Declarations();
             Compound CompoundStatementNode = this.CompoundStatement();
+            this.Eat(TokenType.END);
             Block node = new Block(declarationNodes, CompoundStatementNode);
 
             return node;
@@ -119,10 +120,8 @@ namespace BNInterpreter
             }
 
             // Trong function là 1 block, tạo một block trong function và init function
-            this.Eat(TokenType.SEMI);
             var blockNode = this.Block();
             var procDeclaration = new ProcedureDeclaration(procName, _params, blockNode);
-            this.Eat(TokenType.SEMI);
 
             return procDeclaration;
         }
@@ -243,20 +242,16 @@ namespace BNInterpreter
             string programName = varNode.value;
 
             // Chương trình chính chứa một block
-            this.Eat(TokenType.SEMI);
             Block blockNode = this.Block();
             ProgramAST programNode = new ProgramAST(programName, blockNode);
 
-            this.Eat(TokenType.DOT);
             return programNode;
         }
 
         private Compound CompoundStatement()
         {
             // Một compound chứa nhiều statement
-            this.Eat(TokenType.BEGIN);
             List<AST> nodes = this.StatementList();
-            this.Eat(TokenType.END);
 
             // Khởi tạo compound và add các statement vào compound
             Compound root = new Compound();
