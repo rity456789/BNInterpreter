@@ -10,6 +10,9 @@ using TokenNamespace;
 
 namespace BNInterpreter
 {
+    /// <summary>
+    /// Class có nhiệm vụ kiểm tra các lỗi semantic trong chương trình trước khi thực thi chương trình
+    /// </summary>
     class SemanticAnalyzer : NodeVisitor
     {
         private ScopedSymbolTable currentScope;
@@ -26,23 +29,36 @@ namespace BNInterpreter
             error.ShowError();
         }
 
-        public void VisitBlock(Block node)
-        {
-            foreach (AST declaration in node.declarations)
-            {
-                this.Visit(declaration);
-            }
-            this.Visit(node.compoundStatement);
-        }
-
+        /// <summary>
+        /// Kiểm tra lỗi chương trình chính
+        /// </summary>
+        /// <param name="node"></param>
         public void VisitProgramAST(ProgramAST node)
         {
             Console.WriteLine("Enter scope: global");
             var globalScope = new ScopedSymbolTable("global", 1, this.currentScope);
+
             this.currentScope = globalScope;
             this.Visit(node.block);
             this.currentScope = this.currentScope.enclosingScope;
         }
+
+        /// <summary>
+        /// Kiếm tra lỗi trong một block
+        /// </summary>
+        /// <param name="node"></param>
+        public void VisitBlock(Block node)
+        {
+            // Kiểm tra lỗi ở các declarations
+            foreach (AST declaration in node.declarations)
+            {
+                this.Visit(declaration);
+            }
+
+            // Kiểm tra lỗi ở compound
+            this.Visit(node.compoundStatement);
+        }
+
 
         public void VisitBinOP(BinOP node)
         {

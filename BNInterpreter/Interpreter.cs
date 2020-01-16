@@ -113,7 +113,6 @@ namespace BNInterpreter
         /// <returns></returns>
         public object VisitVar(AST node)
         {
-
             string VarName = ((Var)node).value;
 
             object val = GLOBAL_SCOPE[VarName];
