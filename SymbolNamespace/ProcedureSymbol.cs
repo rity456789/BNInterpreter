@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SymbolNamespace
 {
+    /// <summary>
+    /// Class lưu các hàm được khai báo
+    /// </summary>
     public class ProcedureSymbol : Symbol
     {
         public List<VarSymbol> _params;
@@ -14,7 +17,5 @@ namespace SymbolNamespace
         {
             this._params = _params == null ? new List<VarSymbol>() : _params;
         }
-
-
     }
 }
