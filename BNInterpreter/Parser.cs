@@ -74,10 +74,10 @@ namespace BNInterpreter
                 else if (this.currentToken.type == TokenType.PROCEDURE)
                 {
                     ProcedureDeclaration procDecl = this.ProcedureDeclaration();
-                    declarations.Add(procDecl);                   
+                    declarations.Add(procDecl);
                 }
                 else break;
-            }            
+            }
             return declarations;
         }
 
@@ -234,24 +234,52 @@ namespace BNInterpreter
             return results;
         }
 
+        private ProcedureCall ProcCallStatement()
+        {
+            var token = this.currentToken;
+            var procName = this.currentToken.value;
+            this.Eat(TokenType.ID);
+            this.Eat(TokenType.LPAREN);
+
+            var actualParams = new List<AST>();
+
+            if (this.currentToken.type != TokenType.RPAREN)
+            {
+                var node = this.Expression();
+                actualParams.Add(node);
+
+                while (this.currentToken.type == TokenType.COMMA)
+                {
+                    this.Eat(TokenType.COMMA);
+                    node = this.Expression();
+                    actualParams.Add(node);
+                }
+            }
+
+            this.Eat(TokenType.RPAREN);
+
+            return new ProcedureCall(procName, actualParams, token);
+
+        }
+
         private AST Statement()
         {
-            AST node;
-
             if (currentToken.type == TokenType.BEGIN)
             {
-                node = this.CompoundStatement();
+                return this.CompoundStatement();
             }
-            else if (currentToken.type == TokenType.ID)
+            else if (currentToken.type == TokenType.ID && this.lexer.currentChar == '(')
             {
-                node = this.AssignmentStatement();
+                return this.ProcCallStatement();
+            }
+            else if (this.currentToken.type == TokenType.ID)
+            {
+                return this.AssignmentStatement();
             }
             else
             {
-                node = this.Empty();
+                return this.Empty();
             }
-
-            return node;
         }
 
         private AST AssignmentStatement()

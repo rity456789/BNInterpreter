@@ -129,5 +129,10 @@ namespace BNInterpreter
         {
             return 0;
         }
+
+        public int VisitProcedureCall(ProcedureCall node)
+        {
+            return 0;
+        }
     }
 }

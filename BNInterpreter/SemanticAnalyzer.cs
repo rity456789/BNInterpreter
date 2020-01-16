@@ -139,5 +139,13 @@ namespace BNInterpreter
                 //ErrorsHandler.ShowError("Do not declare variable name: " + varName);
             }
         }
+
+        public void VisitProcedureCall(ProcedureCall node)
+        {
+            foreach(var paramNode in node.actualParams)
+            {
+                this.Visit(paramNode);
+            }
+        }
     }
 }

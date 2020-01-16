@@ -16,7 +16,7 @@ namespace BNInterpreter
 
         private string text;
         private int pos;
-        private char currentChar;
+        public char currentChar;
         private int lineno;
         private int column;
 
