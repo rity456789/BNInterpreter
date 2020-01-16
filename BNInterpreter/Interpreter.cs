@@ -114,7 +114,6 @@ namespace BNInterpreter
         /// <returns></returns>
         public object VisitVar(AST node)
         {
-
             string VarName = ((Var)node).value;
 
             ActivationRecord ar = (ActivationRecord)this.callStack.Peek();
