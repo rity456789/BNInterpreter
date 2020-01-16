@@ -269,6 +269,11 @@ namespace BNInterpreter
             }
         }
 
+        public object VisitMyString(MyString node)
+        {
+            return node.value;
+        }
+
         /// <summary>
         /// Thông dịch chương trình
         /// </summary>

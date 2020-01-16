@@ -57,6 +57,7 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("program", new Token(TokenType.PROGRAM, "PROGRAM"));
             RESERVED_KEYWORDS.Add("int", new Token(TokenType.INTEGER, "INTEGER"));
             RESERVED_KEYWORDS.Add("real", new Token(TokenType.REAL, "REAL"));
+            RESERVED_KEYWORDS.Add("string", new Token(TokenType.STRING, "STRING"));
             RESERVED_KEYWORDS.Add("div", new Token(TokenType.INTEGER_DIV, "DIV"));
             RESERVED_KEYWORDS.Add("function", new Token(TokenType.PROCEDURE, "PROCEDURE"));
             RESERVED_KEYWORDS.Add("return", new Token(TokenType.RETURN, "RETURN"));
@@ -189,6 +190,10 @@ namespace BNInterpreter
                     this.SkipComment();
                     continue;
                 }
+                else if(this.currentChar == '"')
+                {
+                    return this.GetStringToken();
+                }
                 else if (this.currentChar == '{')
                 {
                     this.AdvanceCurrentChar();
@@ -292,6 +297,19 @@ namespace BNInterpreter
 
             return new Token(TokenType.EOF, null, this.lineno, this.column);
 
+        }
+
+        private Token GetStringToken()
+        {
+            var value = "";
+            this.AdvanceCurrentChar();
+            while(!this.IsEnd() && this.currentChar!='"')
+            {
+                value += this.currentChar;
+                this.AdvanceCurrentChar();
+            }
+            this.AdvanceCurrentChar();
+            return new Token(TokenType.STRING_CONST, value, this.lineno, this.column);
         }
 
         /// <summary>

@@ -179,6 +179,11 @@ namespace BNInterpreter
             this.Visit(node.whileBlock);
         }
 
+        public void VisitMyString(MyString node)
+        {
+            
+        }
+
         public void VisitProcedureCall(ProcedureCall node)
         {
             foreach(var paramNode in node.actualParams)

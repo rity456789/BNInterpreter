@@ -40,7 +40,7 @@ namespace BNInterpreter
             }
             else
             {
-                //throw new Exception();
+                throw new Exception();
                 this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
         }
@@ -224,9 +224,13 @@ namespace BNInterpreter
             {
                 this.Eat(TokenType.INTEGER);
             }
-            else
+            else if (this.currentToken.type == TokenType.REAL)
             {
                 this.Eat(TokenType.REAL);
+            }
+            else if (this.currentToken.type == TokenType.STRING)
+            {
+                this.Eat(TokenType.STRING);
             }
 
             TypeAST node = new TypeAST(token);
@@ -516,6 +520,11 @@ namespace BNInterpreter
             {
                 Eat(TokenType.REAL_CONST);
                 return new Num(token);
+            }
+            else if (token.type == TokenType.STRING_CONST)
+            {
+                Eat(TokenType.STRING_CONST);
+                return new MyString(token);
             }
             else if (token.type == TokenType.LPAREN)
             {
