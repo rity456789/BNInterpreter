@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TokenNamespace
 {
+    /// <summary>
+    /// Type của token
+    /// </summary>
     public enum TokenType
     {
         // Constant Number
@@ -42,14 +45,16 @@ namespace TokenNamespace
         EOF = 99,
     }
 
+    /// <summary>
+    /// Class lưu trữ token gồm (type, value, dòng, cột)
+    /// </summary>
     public class Token
     {
-        private static Dictionary<TokenType, bool> listOperator = new Dictionary<TokenType, bool>();
-        //private List<TokenType> listOperator = new List<TokenType>((int)TokenType.PLUS);
-        public TokenType type { get; private set; }
-        public string value { get; private set; }
-        public int lineno;
-        public int column;
+        //private static Dictionary<TokenType, bool> listOperator = new Dictionary<TokenType, bool>();
+        public TokenType type { get; private set; } //type
+        public string value { get; private set; }   //giá trị
+        public int lineno;                          //dòng
+        public int column;                          //cột
 
         public Token(TokenType type, string value, int lineno = -1, int column = -1)
         {
@@ -59,28 +64,33 @@ namespace TokenNamespace
             this.column = column;
         }
 
+        /// <summary>
+        /// Hiển thị token dưới dạng chuỗi Token: {Loại}, {Giá trị}, {Vị trí} 
+        /// </summary>
+        /// <returns></returns>
         public string ShowToken()
         {
+            // Token: {Loại}, {Giá trị}, {Vị trí} 
             return "Token: " + this.type.ToString() + ", " + this.value + ", position = " + this.lineno + ":" + this.column;
         }
 
-        public static void AddSampleOperator()
-        {
-            listOperator.Add(TokenType.INTEGER_CONST, false);
-            listOperator.Add(TokenType.PLUS, true);
-            listOperator.Add(TokenType.MINUS, true);
-            listOperator.Add(TokenType.MULTIPLE, true);
-            listOperator.Add(TokenType.DIVIDE, true);
-            listOperator.Add(TokenType.LPAREN, false);
-            listOperator.Add(TokenType.RPAREN, false);
+        //public static void AddSampleOperator()
+        //{
+        //    listOperator.Add(TokenType.INTEGER_CONST, false);
+        //    listOperator.Add(TokenType.PLUS, true);
+        //    listOperator.Add(TokenType.MINUS, true);
+        //    listOperator.Add(TokenType.MULTIPLE, true);
+        //    listOperator.Add(TokenType.DIVIDE, true);
+        //    listOperator.Add(TokenType.LPAREN, false);
+        //    listOperator.Add(TokenType.RPAREN, false);
 
 
-            listOperator.Add(TokenType.EOF, false);
-        }
+        //    listOperator.Add(TokenType.EOF, false);
+        //}
 
-        public bool IsOperator()
-        {
-            return listOperator.ContainsKey(this.type) && listOperator[this.type];
-        }
+        //public bool IsOperator()
+        //{
+        //    return listOperator.ContainsKey(this.type) && listOperator[this.type];
+        //}
     }
 }
