@@ -15,13 +15,13 @@ namespace BNInterpreter
     class Interpreter : NodeVisitor
     {
         // Sử dụng mẫu Visitor để duyệt cây AST và execute tại mỗi node
-        private Parser parser;
+        private AST tree;
         //public Dictionary<string, object> GLOBAL_SCOPE = new Dictionary<string, object>();
         private CallStack callStack;
 
-        public Interpreter(Parser parser)
+        public Interpreter(AST tree)
         {
-            this.parser = parser;
+            this.tree = tree;
             this.callStack = new CallStack();
         }
 
@@ -275,8 +275,7 @@ namespace BNInterpreter
         /// <returns></returns>
         public int Interpret()
         {
-            var tree = parser.Parse();
-            return (int)this.Visit(tree);
+            return (int)this.Visit(this.tree);
         }
     }
 }

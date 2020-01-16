@@ -156,6 +156,29 @@ namespace BNInterpreter
             }
         }
 
+        public void VisitReturn(Return node)
+        {
+            Visit(node.result);
+        }
+
+        public void VisitPrint(object a)
+        {
+
+        }
+
+        public void VisitIf(If node)
+        {
+            this.Visit(node.expression);
+            this.Visit(node.ifBlock);
+            this.Visit(node.elseBlock);
+        }
+
+        public void VisitWhile(While node)
+        {
+            this.Visit(node.expression);
+            this.Visit(node.whileBlock);
+        }
+
         public void VisitProcedureCall(ProcedureCall node)
         {
             foreach(var paramNode in node.actualParams)
