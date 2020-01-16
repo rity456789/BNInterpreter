@@ -9,16 +9,18 @@ using TokenNamespace;
 
 namespace BNInterpreter
 {
-
+    /// <summary>
+    /// Class phân tích chuỗi thành các token
+    /// </summary>
     class Lexer
     {
-        private const char ENDCHAR = '@';
+        private const char ENDCHAR = '@';       // Kí tự kết thúc
 
-        private string text;
-        private int pos;
-        public char currentChar;
-        private int lineno;
-        private int column;
+        private string text;                    // Chuỗi cần phân tích thành token
+        private int pos;                        // Vị trí hiện tại đang phân tích
+        public char currentChar;                // Kí tự hiện tại
+        private int lineno;                     // Dòng hiện tại trong chương trình người dùng nhập
+        private int column;                     // Cột hiện tại trong chương trình người dùng nhập
 
         private static Dictionary<string, Token> RESERVED_KEYWORDS = new Dictionary<string, Token>();
 
@@ -34,6 +36,9 @@ namespace BNInterpreter
             column = 1;
         }
 
+        /// <summary>
+        /// Hàm đẩy thông báo lỗi
+        /// </summary>
         private void ShowError()
         {
             var message = "Lexer error on " + this.currentChar + " line: " + this.lineno + " column: " + this.column;
@@ -41,6 +46,9 @@ namespace BNInterpreter
             error.ShowError();
         }
 
+        /// <summary>
+        /// Hàm tĩnh khởi tạo các RESERVED_KEYWORDS của chương trình
+        /// </summary>
         public static void InitReservedKeywords()
         {
             RESERVED_KEYWORDS.Add("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
@@ -53,11 +61,19 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("PROCEDURE", new Token(TokenType.PROCEDURE, "PROCEDURE"));
         }
 
+        /// <summary>
+        /// Hàm kiểm tra kết thúc file
+        /// </summary>
+        /// <returns></returns>
         private bool IsEnd()
         {
             return this.currentChar == ENDCHAR;
         }
 
+
+        /// <summary>
+        /// Hàm bỏ qua khoảng trắng
+        /// </summary>
         private void SkipWhiteSpace()
         {
             while (!IsEnd() && Char.IsWhiteSpace(this.currentChar))
@@ -66,6 +82,9 @@ namespace BNInterpreter
             }
         }
 
+        /// <summary>
+        /// Hàm bỏ qua comment
+        /// </summary>
         private void SkipComment()
         {
             while (this.currentChar != '}')
@@ -76,6 +95,10 @@ namespace BNInterpreter
             this.AdvanceCurrentChar();
         }
 
+        /// <summary>
+        /// Lấy token Number (1 là số nguyên, 2 là số thực)
+        /// </summary>
+        /// <returns></returns>
         private Token Number()
         {
             string result = "";
@@ -93,6 +116,7 @@ namespace BNInterpreter
                 result += this.currentChar;
                 this.AdvanceCurrentChar();
 
+                // Lấy chuỗi số của phần thập phân
                 while (!IsEnd() && Char.IsDigit(this.currentChar))
                 {
                     result += this.currentChar;
@@ -109,91 +133,106 @@ namespace BNInterpreter
             return token;
         }
 
+        /// <summary>
+        /// parse string to float
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private float ParseFloat(string value)
         {
             return float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
         }
 
+        /// <summary>
+        /// Hàm trả về token Id (1 là Reserved words, 2 là Identifiers)
+        /// </summary>
+        /// <returns></returns>
         private Token _id()
         {
             var result = "";
 
+            //Đọc hết chuỗi kí tự
             while (!this.IsEnd() && Char.IsLetterOrDigit(this.currentChar))
             {
                 result += currentChar;
                 this.AdvanceCurrentChar();
             }
 
+            //Kiếm tra trong RESERVED_KEYWORDS
+            //Nếu là RESERVED_KEYWORDS thì trả vè RESERVED_KEYWORDS
+            //Ngược lại là trả về token Id
             return RESERVED_KEYWORDS.ContainsKey(result) ? RESERVED_KEYWORDS[result] : new Token(TokenType.ID, result, this.lineno, this.column);
         }
 
         /// <summary>
-        /// lay token tiep theo
+        /// Lấy token tiếp theo
         /// </summary>
         /// <returns></returns>
         public Token GetNextToken()
-        {
+        {   //Khi chưa hết file
             while (!this.IsEnd())
             {
-                // White space
+                //Nếu là khoảng trắng thì bỏ qua
                 if (Char.IsWhiteSpace(this.currentChar))
                 {
                     this.SkipWhiteSpace();
                     continue;
                 }
-                // Comment
+                //Nếu là comment thì bỏ qua
                 else if (this.currentChar == '{')
                 {
                     this.AdvanceCurrentChar();
                     this.SkipComment();
                     continue;
                 }
-                // Identifiers/Reserved words
+                //Token Id(1 là Reserved words, 2 là Identifiers)
                 else if (Char.IsLetter(this.currentChar))
                 {
                     return this._id();
                 }
-                // Digit
+                //Token số (integer hoặc real)
                 else if (Char.IsDigit(currentChar))
                 {
                     return this.Number();
                 }
-                // Assign
-                else if (this.currentChar == ':' && this.peek() == '=')
+                //Token assign
+                else if (this.currentChar == ':' && this.Peek() == '=')
                 {
                     this.AdvanceCurrentChar();
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.ASSIGN, currentChar.ToString(), this.lineno, this.column);
                 }
-                // End statement
+                //Token End statement
                 else if (this.currentChar == ';')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.SEMI, currentChar.ToString(), this.lineno, this.column);
                 }
-                // End program
+                //Token End program
                 else if (this.currentChar == '.')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.DOT, currentChar.ToString(), this.lineno, this.column);
                 }
-                
+                //Token Colon
                 else if (this.currentChar == ':')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.COLON, currentChar.ToString(), this.lineno, this.column);
                 }
+                //Token Comma
                 else if (this.currentChar == ',')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.COMMA, currentChar.ToString(), this.lineno, this.column);
                 }
+                //Token Real div
                 else if (this.currentChar == '/')
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.REAL_DIV, currentChar.ToString(), this.lineno, this.column);
                 }
-                // Operators
+                //Token operator hoặc endfile
                 else
                 {
                     var currentOperator = currentChar;
@@ -207,6 +246,11 @@ namespace BNInterpreter
 
         }
 
+        /// <summary>
+        /// Lấy token là operator
+        /// </summary>
+        /// <param name="currentOperator"></param>
+        /// <returns></returns>
         private Token GetTokenOperator(char currentOperator)
         {
             if (currentOperator == '+')
@@ -237,14 +281,14 @@ namespace BNInterpreter
         }
 
         /// <summary>
-        /// lấy số nguyên
+        /// Lấy token số nguyên
         /// </summary>
         /// <returns></returns>
         private string GetInteger()
         {
             string currentTokenVal = "";
             while (char.IsDigit(currentChar))
-            {
+            {// Khi vẫn còn là số thì cứ đọc tiếp
                 currentTokenVal += currentChar;
                 AdvanceCurrentChar();
             }
@@ -252,32 +296,37 @@ namespace BNInterpreter
         }
 
         /// <summary>
-        /// dịch pos lên 1, cập nhật curChar
+        /// dịch pos lên 1, cập nhật curChar, dòng hiện tại, cột hiện tại
         /// </summary>
         private void AdvanceCurrentChar()
-        {
+        {   
             if (this.currentChar == '\n')
-            {
+            {//Hết dòng
                 this.lineno += 1;
                 this.column = 0;
             }
             pos++;
 
             if (pos > text.Length - 1)
-            {
+            {//Hết file
                 currentChar = ENDCHAR;
                 return;
             }
 
+            //Cập nhật kí tự tiếp theo
             currentChar = text[pos];
             this.column += 1;
         }
 
-        private char peek()
+        /// <summary>
+        /// Xem trước kí tự tiếp theo (không dịch pos)
+        /// </summary>
+        /// <returns></returns>
+        private char Peek()
         {
             var peekPos = this.pos + 1;
             if (peekPos > this.text.Length - 1)
-            {
+            {// Kết thúc file
                 return ' ';
             }
             else
