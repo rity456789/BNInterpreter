@@ -75,7 +75,7 @@ namespace BNInterpreter
                 if (this.currentToken.type == TokenType.VAR)
                 {
                     this.Eat(TokenType.VAR);
-                    while (this.currentToken.type == TokenType.ID)
+                    if (this.currentToken.type == TokenType.ID)
                     {
                         List<VariableDeclaration> varDecl = this.VariableDeclaration();
                         declarations.AddRange(varDecl);

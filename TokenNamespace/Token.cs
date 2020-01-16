@@ -53,7 +53,7 @@ namespace TokenNamespace
 
 
 
-
+        UNDEFINED = 198,
         EOF = 199,
     }
 

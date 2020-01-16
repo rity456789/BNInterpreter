@@ -325,7 +325,10 @@ namespace BNInterpreter
             {
                 return new Token(TokenType.RPAREN, currentOperator.ToString(), this.lineno, this.column);
             }
-            else return new Token(TokenType.EOF, null, this.lineno, this.column);
+            else
+            {
+                return new Token(TokenType.UNDEFINED, null, this.lineno, this.column);
+            }
         }
 
         /// <summary>

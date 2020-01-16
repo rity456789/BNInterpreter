@@ -32,6 +32,7 @@ namespace Errors
         public void ShowError()
         {
             Console.WriteLine(this.message);
+            Environment.Exit(0);
         }
     }
 }
