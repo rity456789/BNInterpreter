@@ -44,6 +44,10 @@ namespace BNInterpreter
             }
         }
 
+        /// <summary>
+        /// Tạo block
+        /// </summary>
+        /// <returns></returns>
         private Block Block()
         {
             // Một Block có nhiều declarations và một compound
@@ -55,7 +59,10 @@ namespace BNInterpreter
             return node;
         }
 
-
+        /// <summary>
+        /// Tạo mảng declaration
+        /// </summary>
+        /// <returns></returns>
         private List<AST> Declarations()
         {
             // Lấy ra tất cả variable decalration và function declaration
@@ -89,6 +96,10 @@ namespace BNInterpreter
             return declarations;
         }
 
+        /// <summary>
+        /// Tạo function declaration
+        /// </summary>
+        /// <returns></returns>
         private ProcedureDeclaration ProcedureDeclaration()
         {
             // Lấy tên function và tất cả params
@@ -115,6 +126,10 @@ namespace BNInterpreter
             return procDeclaration;
         }
 
+        /// <summary>
+        /// Lấy các list formal params trong function
+        /// </summary>
+        /// <returns></returns>
         private List<Param> FormalParameterList()
         {
             // Không tìm thấy identifer, có nghĩa là function ko có params
@@ -135,6 +150,10 @@ namespace BNInterpreter
             return paramNodes;
         }
 
+        /// <summary>
+        /// Lấy các params trong 1 formal params và khởi tạo cùng với type
+        /// </summary>
+        /// <returns></returns>
         private List<Param> FormalParameters()
         {
             // function(a, b: int; c, d: real)
