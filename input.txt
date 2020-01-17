@@ -1,1 +1,30 @@
-PROGRAM TestAST; VAR a, b : INTEGER; y: REAL; BEGIN {Comment} a := 2; b := 10 * a + 10 * a DIV 4; y := 20 / 7 + 3.14; END. {Comment}
+program test
+{
+	var h: bool;
+	var s : string;
+	var x, y: int;
+	
+	
+	function IsOdd(x: int)
+	{
+		var temp: int;
+		
+	}
+	if(1==1)
+	{
+		h = true;
+	}
+	else
+	{
+		h = false;
+	};
+
+	if(h == false)
+	{
+		print("haha");
+	}
+	else
+	{
+		print("huhu");
+	};
+}	
