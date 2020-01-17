@@ -36,6 +36,7 @@ namespace BNInterpreter
             else if (node.op.type == TokenType.MINUS) return Convert.ToSingle(this.Visit(node.left)) - Convert.ToSingle(this.Visit(node.right));
             else if (node.op.type == TokenType.MULTIPLE) return Convert.ToSingle(this.Visit(node.left)) * Convert.ToSingle(this.Visit(node.right));
             else if (node.op.type == TokenType.INTEGER_DIV) return (int)(Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right)));
+            else if (node.op.type == TokenType.INTEGER_MOD) return (int)(Convert.ToSingle(this.Visit(node.left)) % Convert.ToSingle(this.Visit(node.right)));
             else if (node.op.type == TokenType.REAL_DIV) return Convert.ToSingle(this.Visit(node.left)) / Convert.ToSingle(this.Visit(node.right));
             else if (node.op.type == TokenType.EQUAL) return Convert.ToSingle(this.Visit(node.left)) == Convert.ToSingle(this.Visit(node.right));
             else if (node.op.type == TokenType.NOT_EQUAL) return Convert.ToSingle(this.Visit(node.left)) != Convert.ToSingle(this.Visit(node.right));

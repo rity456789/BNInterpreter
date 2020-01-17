@@ -333,6 +333,10 @@ namespace BNInterpreter
             {
                 return new Token(TokenType.MINUS, currentOperator.ToString(), this.lineno, this.column);
             }
+            else if (currentOperator == '%')
+            {
+                return new Token(TokenType.INTEGER_MOD, currentOperator.ToString(), this.lineno, this.column);
+            }
             else if (currentOperator == '*')
             {
                 return new Token(TokenType.MULTIPLE, currentOperator.ToString(), this.lineno, this.column);

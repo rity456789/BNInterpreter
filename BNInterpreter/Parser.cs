@@ -386,8 +386,8 @@ namespace BNInterpreter
             {
                 this.Eat(TokenType.ELSE);
                 elseBlock = this.Block();
-            }         
-            
+            }
+
             return new If(expression, ifBlock, elseBlock);
         }
 
@@ -395,7 +395,7 @@ namespace BNInterpreter
         {
             var leftExpression = this.Expression();
             var op = this.currentToken;
-            if(op.IsCompareOperator())
+            if (op.IsCompareOperator())
             {
                 this.Eat(this.currentToken.type);
             }
@@ -468,6 +468,7 @@ namespace BNInterpreter
                 this.currentToken.type == TokenType.INTEGER_DIV
                 || this.currentToken.type == TokenType.MULTIPLE
                 || this.currentToken.type == TokenType.REAL_DIV
+                || this.currentToken.type == TokenType.INTEGER_MOD
                 )
             {
                 Token token = this.currentToken;
@@ -479,6 +480,10 @@ namespace BNInterpreter
                 else if (token.type == TokenType.INTEGER_DIV)
                 {
                     Eat(TokenType.INTEGER_DIV);
+                }
+                else if (token.type == TokenType.INTEGER_MOD)
+                {
+                    Eat(TokenType.INTEGER_MOD);
                 }
                 else if (token.type == TokenType.REAL_DIV)
                 {
