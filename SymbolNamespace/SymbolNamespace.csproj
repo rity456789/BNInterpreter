@@ -46,7 +46,6 @@
     <Compile Include="Symbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopedSymbolTable.cs" />
-    <Compile Include="SymbolTableBuilder.cs" />
     <Compile Include="VarSymbol.cs" />
   </ItemGroup>
   <ItemGroup>
