@@ -12,10 +12,13 @@ namespace BNInterpreter
     {
         static void Main(string[] args)
         {
+            var file = "input.txt";
+            if (args.Length > 0) file = args[0];
+
             Token.AddSampleCompareOperator();
             Lexer.InitReservedKeywords();
 
-            string text = Input.Read();
+            string text = Input.Read(file);
 
             Lexer lexer = new Lexer(text);
             Parser parser = new Parser(lexer);
