@@ -58,7 +58,7 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("int", new Token(TokenType.INTEGER, "INTEGER"));
             RESERVED_KEYWORDS.Add("real", new Token(TokenType.REAL, "REAL"));
             RESERVED_KEYWORDS.Add("string", new Token(TokenType.STRING, "STRING"));
-            RESERVED_KEYWORDS.Add("div", new Token(TokenType.INTEGER_DIV, "DIV"));
+            //RESERVED_KEYWORDS.Add("div", new Token(TokenType.INTEGER_DIV, "DIV"));
             RESERVED_KEYWORDS.Add("function", new Token(TokenType.PROCEDURE, "PROCEDURE"));
             RESERVED_KEYWORDS.Add("return", new Token(TokenType.RETURN, "RETURN"));
             RESERVED_KEYWORDS.Add("if", new Token(TokenType.IF, "IF"));
@@ -278,6 +278,12 @@ namespace BNInterpreter
                 {
                     this.AdvanceCurrentChar();
                     return new Token(TokenType.COMMA, currentChar.ToString(), this.lineno, this.column);
+                }
+                else if (this.currentChar == '/' && this.Peek() == '/')
+                {
+                    this.AdvanceCurrentChar();
+                    this.AdvanceCurrentChar();
+                    return new Token(TokenType.INTEGER_DIV, currentChar.ToString(), this.lineno, this.column);
                 }
                 //Token Real div
                 else if (this.currentChar == '/')

@@ -35,6 +35,7 @@ namespace TokenNamespace
         RPAREN = 66,
         INTEGER_DIV = 67,
         REAL_DIV = 68,
+        INTEGER_MOD = 69,
         // Reserved Keywords
         BEGIN = 71,
         END = 72,
