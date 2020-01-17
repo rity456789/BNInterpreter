@@ -170,7 +170,10 @@ namespace BNInterpreter
         {
             this.Visit(node.expression);
             this.Visit(node.ifBlock);
-            this.Visit(node.elseBlock);
+            if (node.elseBlock != null)
+            {
+                this.Visit(node.elseBlock);
+            }
         }
 
         public void VisitWhile(While node)

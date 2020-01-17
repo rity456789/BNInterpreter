@@ -86,7 +86,7 @@ namespace BNInterpreter
             // Visit compound gồm nhiều statement, mỗi child là một statement
             foreach (AST child in ((Compound)node).children)
             {
-                if(child.GetType().Name.ToString() == "Return")
+                if (child.GetType().Name.ToString() == "Return")
                 {
                     return this.Visit(child);
                 }
@@ -189,9 +189,9 @@ namespace BNInterpreter
         {
             ActivationRecord curScope = this.callStack.Peek();
 
-            if(curScope.builtinProcs.ContainsKey(node.procName))
+            if (curScope.builtinProcs.ContainsKey(node.procName))
             {
-               return this.RunBuiltinProc(curScope, node);
+                return this.RunBuiltinProc(curScope, node);
             }
 
             ProcedureDeclaration proc = (ProcedureDeclaration)curScope.GetItem(node.procName);
@@ -258,13 +258,16 @@ namespace BNInterpreter
             }
             else
             {
-                this.Visit(node.elseBlock);
+                if (node.elseBlock != null)
+                {
+                    this.Visit(node.elseBlock);
+                }
             }
         }
 
         public void VisitWhile(While node)
         {
-            while((bool)Visit(node.expression))
+            while ((bool)Visit(node.expression))
             {
                 this.Visit(node.whileBlock);
             }
