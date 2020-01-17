@@ -42,7 +42,7 @@ namespace SymbolNamespace
         /// <param name="symbol"></param>
         public void Insert(Symbol symbol)
         {
-            Console.WriteLine("Insert " + symbol.name);
+            //Console.WriteLine("Insert " + symbol.name);
             symbols[symbol.name] = symbol;
         }
 
@@ -54,7 +54,7 @@ namespace SymbolNamespace
         /// <returns></returns>
         public Symbol Lookup(string name, bool onCurrentScopeOnly = false)
         {
-            Console.WriteLine("Lookup " + name + ", Scope name: " + this.scopeName);
+            //Console.WriteLine("Lookup " + name + ", Scope name: " + this.scopeName);
             if (symbols.ContainsKey(name))
             {// Nếu có symbol trong scope
                 return symbols[name];

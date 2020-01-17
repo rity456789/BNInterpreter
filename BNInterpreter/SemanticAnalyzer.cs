@@ -35,7 +35,7 @@ namespace BNInterpreter
         /// <param name="node"></param>
         public void VisitProgramAST(ProgramAST node)
         {
-            Console.WriteLine("Enter scope: global");
+            //Console.WriteLine("Enter scope: global");
             var globalScope = new ScopedSymbolTable("global", 1, this.currentScope);
 
             this.currentScope = globalScope;
@@ -110,7 +110,7 @@ namespace BNInterpreter
             var procSymbol = new ProcedureSymbol(procName);
             this.currentScope.Insert(procSymbol);
 
-            Console.WriteLine("Enter scope: " + procName);
+            //Console.WriteLine("Enter scope: " + procName);
             var procedureScope = new ScopedSymbolTable(procName, this.currentScope.scopeLevel + 1, this.currentScope);
             this.currentScope = procedureScope;
 
@@ -126,7 +126,7 @@ namespace BNInterpreter
             this.Visit(node.blockNode);
 
             this.currentScope = this.currentScope.enclosingScope;
-            Console.WriteLine("Leave scope: " + procName);
+            //Console.WriteLine("Leave scope: " + procName);
         }
 
         public void VisitAssign(AST node)
