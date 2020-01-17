@@ -10,9 +10,9 @@ namespace BNInterpreter
 {
     class Input
     {
-        public static string Read(string inputPath)
+        public static string Read()
         {
-            string path = Directory.GetCurrentDirectory() + "\\" + inputPath;
+            string path = Directory.GetCurrentDirectory() + "\\input.txt";
 
             string content = File.ReadAllText(path, Encoding.UTF8);
             return content;

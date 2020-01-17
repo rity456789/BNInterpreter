@@ -12,15 +12,10 @@ namespace BNInterpreter
     {
         static void Main(string[] args)
         {
-            var path = "";
-            Console.Write("Nhap vao duong dan tuong doi cua tap tin can duoc thuc thi: ");
-            path = Console.ReadLine();
-            string text = Input.Read(path);
-
             Token.AddSampleCompareOperator();
             Lexer.InitReservedKeywords();
 
-            
+            string text = Input.Read();
 
             Lexer lexer = new Lexer(text);
             Parser parser = new Parser(lexer);
