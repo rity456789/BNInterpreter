@@ -1,0 +1,32 @@
+program test
+{
+	var x, y: int;
+	var s: string;
+	var rs: bool;
+	function IsEven(x: int)
+	{
+		var result: bool;
+		if(x % 2 == 0)
+		{
+			result = true;
+		}
+		else
+		{
+			result = false;
+		};
+		
+		return result;
+	}
+	s = "Chuong trinh kiem tra so chan hay le cua 1620: ";
+	print("Chao mung den voi BNInterpreter:");
+	print(s);
+	rs = IsEven(1620);
+	if(rs == true)
+	{
+		print("1620 la so chan");
+	}
+	else
+	{
+		print("1620 la so le");
+	};
+}	

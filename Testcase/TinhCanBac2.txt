@@ -1,0 +1,99 @@
+program test
+{
+	var x, y: int;
+	var s: string;
+	var rs: bool;
+	function CanBacHai(x: real)
+	{
+		var result: real;
+		var tempX: real;
+		var tempEp: real;
+		var epsilon: real;
+		var left, right: real;
+		var check: bool;
+		var resultIsGreater: bool;
+		
+		epsilon = 0.000001;		
+		left = 0.0;
+		right = x;
+		result = (left + right)/2;
+		tempX = result * result;
+
+		#Kiem tra ket qua co lon hon ket qua can tim khong
+		if(tempX > x )
+		{
+			tempEp = tempX - x;
+			resultIsGreater = true;
+			if(tempEp > epsilon)
+			{
+				check = false;
+			}
+			else
+			{
+				check = true;
+			};
+		}
+		else
+		{
+			resultIsGreater = false;
+			tempEp = x - tempX;
+			if(tempEp > epsilon)
+			{
+				check = false;
+			}
+			else
+			{
+				check = true;
+			};
+		};
+		
+		while(check == false)
+		{
+			if(resultIsGreater == true)
+			{
+				right = result;				
+			}
+			else
+			{
+				left = result;
+			};
+			#check tiep
+			result = (left + right)/2;
+			tempX = result * result;
+
+			#Kiem tra ket qua co lon hon ket qua can tim khong
+			if(tempX > x )
+			{
+				tempEp = tempX - x;
+				resultIsGreater = true;
+				if(tempEp > epsilon)
+				{
+					check = false;
+				}
+				else
+				{
+					check = true;
+				};
+			}
+			else
+			{
+				resultIsGreater = false;
+				tempEp = x - tempX;
+				if(tempEp > epsilon)
+				{
+					check = false;
+				}
+				else
+				{
+					check = true;
+				};
+			};
+		};
+	
+		return result;
+	}
+	s = "Chuong trinh tinh can bac 2 cua 5: ";
+	print("Chao mung den voi BNInterpreter:");
+	print(s);
+	print(CanBacHai(5));
+}	
