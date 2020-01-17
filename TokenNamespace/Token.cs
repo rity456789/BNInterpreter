@@ -15,10 +15,12 @@ namespace TokenNamespace
         INTEGER_CONST = 10,
         REAL_CONST = 11,
         STRING_CONST = 12,
+        BOOL_CONST = 13,
         // Types
         INTEGER = 20,
         REAL = 21,
         STRING = 22,
+        BOOL = 23,
         // Compare
         EQUAL = 31,
         NOT_EQUAL = 32,

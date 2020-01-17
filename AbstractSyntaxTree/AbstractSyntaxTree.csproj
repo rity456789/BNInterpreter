@@ -47,6 +47,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="Compound.cs" />
     <Compile Include="If.cs" />
+    <Compile Include="MyBool.cs" />
     <Compile Include="MyString.cs" />
     <Compile Include="NodeVisitor.cs" />
     <Compile Include="NoOP.cs" />

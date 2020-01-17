@@ -40,6 +40,7 @@ namespace BNInterpreter
             }
             else
             {
+                throw new Exception();
                 this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
         }
@@ -230,6 +231,10 @@ namespace BNInterpreter
             else if (this.currentToken.type == TokenType.STRING)
             {
                 this.Eat(TokenType.STRING);
+            }
+            else if (this.currentToken.type == TokenType.BOOL)
+            {
+                this.Eat(TokenType.BOOL);
             }
 
             TypeAST node = new TypeAST(token);
@@ -540,6 +545,11 @@ namespace BNInterpreter
             else if (currentToken.type == TokenType.ID && this.lexer.currentChar == '(')
             {
                 return this.ProcCallStatement();
+            }
+            else if (currentToken.type == TokenType.BOOL_CONST)
+            {
+                Eat(TokenType.BOOL_CONST);
+                return new MyBool(token);
             }
             else
             {

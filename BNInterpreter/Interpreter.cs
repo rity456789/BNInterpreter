@@ -275,6 +275,11 @@ namespace BNInterpreter
             return node.value;
         }
 
+        public object VisitMyBool(MyBool node)
+        {
+            return node.value;
+        }
+
         /// <summary>
         /// Thông dịch chương trình
         /// </summary>

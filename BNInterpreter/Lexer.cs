@@ -58,12 +58,15 @@ namespace BNInterpreter
             RESERVED_KEYWORDS.Add("int", new Token(TokenType.INTEGER, "INTEGER"));
             RESERVED_KEYWORDS.Add("real", new Token(TokenType.REAL, "REAL"));
             RESERVED_KEYWORDS.Add("string", new Token(TokenType.STRING, "STRING"));
+            RESERVED_KEYWORDS.Add("bool", new Token(TokenType.BOOL, "BOOL"));
             //RESERVED_KEYWORDS.Add("div", new Token(TokenType.INTEGER_DIV, "DIV"));
             RESERVED_KEYWORDS.Add("function", new Token(TokenType.PROCEDURE, "PROCEDURE"));
             RESERVED_KEYWORDS.Add("return", new Token(TokenType.RETURN, "RETURN"));
             RESERVED_KEYWORDS.Add("if", new Token(TokenType.IF, "IF"));
             RESERVED_KEYWORDS.Add("else", new Token(TokenType.ELSE, "ELSE"));
             RESERVED_KEYWORDS.Add("while", new Token(TokenType.WHILE, "WHILE"));
+            RESERVED_KEYWORDS.Add("true", new Token(TokenType.BOOL_CONST, "TRUE"));
+            RESERVED_KEYWORDS.Add("false", new Token(TokenType.BOOL_CONST, "FALSE"));
         }
 
         /// <summary>
