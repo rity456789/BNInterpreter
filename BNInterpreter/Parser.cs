@@ -40,7 +40,7 @@ namespace BNInterpreter
             }
             else
             {
-                throw new Exception();
+                //throw new Exception();
                 this.ShowError(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
             }
         }
