@@ -1,0 +1,35 @@
+program test
+{
+	var x, y: int;
+	var s: string;
+	var rs: bool;
+	function IsPrime(x: int)
+	{
+		var i: int;
+		var result: bool;
+		result = true;
+		i = 2;
+		while(i<x)
+		{
+			if(x % i == 0)
+			{
+				result = false;
+			};
+			i = i + 1;
+		};
+	
+		return result;
+	}
+	s = "Chuong trinh kiem tra so nguyen to cua 20: ";
+	print("Chao mung den voi BNInterpreter:");
+	print(s);
+	rs = IsPrime(20);
+	if(rs == true)
+	{
+		print("20 la so nguyen to");
+	}
+	else
+	{
+		print("20 khong phai la so nguyen to");
+	};
+}	
